@@ -6,7 +6,8 @@ def find_triangle(data):
     cpy = data.copy()
     ind = pd.merge(data, cpy, left_on = "follows", right_on = "id")
     df_final = pd.merge(ind, data, left_on = "follows_y", right_on = "id")
-    ret = df_final[df_final["id_x"] == df_final["follows"]][["id_x", "follows_x", "follows_y", "follows"]]
+    ret = df_final[df_final["id_x"] == df_final["follows"]][["id_x", "follows_x", "follows_y"]]
+    ret = pd.DataFrame({"triangle": ret.values.tolist()})
     return ret
 
 print(find_triangle(data))
