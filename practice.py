@@ -69,4 +69,5 @@ budgets = pd.DataFrame({
 })
 
 df_merged = pd.merge(df, budgets, on = "department")
+
 print(df_merged)
