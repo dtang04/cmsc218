@@ -96,3 +96,11 @@ print(customer_info)
 
 
 # Exercise 10
+complete_orderbook_by_mon = complete_orderbook.copy()
+complete_orderbook_by_mon["date"] = pd.to_datetime(complete_orderbook_by_mon["date"])
+complete_orderbook_by_mon["month"] = complete_orderbook_by_mon["date"].dt.month
+rev_by_mon = complete_orderbook_by_mon.groupby(["month"]).agg(price = ("price", "sum")).sort_values(ascending = False, by = "price")
+print("\nMax month revenue: ", int(rev_by_mon.head(1).reset_index()["month"]))
+rev_by_mon_prod = complete_orderbook_by_mon.groupby(["month", "product_name"]).agg(price = ("price", "sum")).sort_values(ascending = False, by = "price")
+rev_by_mon_prod = rev_by_mon_prod.loc[pd.DataFrame(rev_by_mon.head(1)).reset_index()["month"]]
+print("\nMax revenue product in highest earning month: ", rev_by_mon_prod[rev_by_mon_prod["price"] == rev_by_mon_prod["price"].max()].reset_index()["product_name"].iloc[0])
