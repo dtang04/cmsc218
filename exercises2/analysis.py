@@ -76,3 +76,12 @@ sales = sales[(sales["amount"] > 0) & (sales["employee_id"].isin(employees["emp_
 sales["region"] = sales["region"].apply(str.capitalize)
 tot_rev = sales.groupby(["region"])["amount"].sum()
 print(tot_rev)
+
+# Exercise 9
+budgets = budgets[budgets["year"] == 2024]
+merged_df = pd.merge(employees, budgets, left_on = "department", right_on = "dept_name")[["name", "budget"]]
+print(merged_df)
+
+# Exercise 10
+merged_df = pd.merge(employees, sales, left_on = "emp_id", right_on = "employee_id")
+print(merged_df.groupby(["department"])["amount"].sum())
