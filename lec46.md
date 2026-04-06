@@ -37,6 +37,7 @@ The **distribution** of a RV describes how probability is assigned to the possib
   \underbrace{\mathbb{E}\big[(\mu-\mathbb{E}[\mu])^2\big]}_{\text{variance}}
   $$
 
+
 ### Properties of Expectation and Variance
 
 * $\mathbb{E}[aX + bY] = a\mathbb{E}[X] + b\mathbb{E}[Y]$
