@@ -28,11 +28,14 @@ The **distribution** of a RV describes how probability is assigned to the possib
 
 ### Bias Variance Decomposition
 * Let $\mu$ be the point estimate of $\mu^*$. Then,
-* \[\mathbb{E}\big[(\mu^* - \mu)^2\big]
+
+$$
+\mathbb{E}\big[(\mu^* - \mu)^2\big]
 =
-\underbrace{(\mathbb{E}[\mu] - \mu^*)^2}_{bias^2}
+\underbrace{(\mathbb{E}[\mu] - \mu^*)^2}_{\text{bias}^2}
 +
-\underbrace{\mathbb{E}\big[(\mu - \mathbb{E}[\mu])^2\big]}_{variance}\]
+\underbrace{\mathbb{E}\big[(\mu - \mathbb{E}[\mu])^2\big]}_{\text{variance}}
+$$
 
 ### Properties of Expectation and Variance
 
