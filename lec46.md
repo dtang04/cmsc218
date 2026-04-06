@@ -27,10 +27,7 @@ The **distribution** of a RV describes how probability is assigned to the possib
  * A **simple random sample (SRS)** means that all possible samples of size n have an equal chance of being selected from the sampling distribution
 
 ### Bias Variance Decomposition
-* Let $\mu$ be the point estimate of $\mu^*$. Then,
-
-$\mathbb{E}[(\mu^*-\mu)^2]=(\mathbb{E}[\mu]-\mu^*)^2+\mathbb{E}[(\mu-\mathbb{E}[\mu])^2]$
-
+* Let $\mu$ be the point estimate of $\mu^*$. Then, $\mathbb{E}[(\mu^*-\mu)^2]=(\mathbb{E}[\mu]-\mu^*)^2+\mathbb{E}[(\mu-\mathbb{E}[\mu])^2]$
 
 ### Properties of Expectation and Variance
 
