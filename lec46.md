@@ -23,7 +23,7 @@ The **distribution** of a RV describes how probability is assigned to the possib
 * A **sampling distribution** is the distribution of a statistic computed from all possible samples of size $n$ from the population.
 * Let $X_1, \dots, X_n \overset{\text{iid}}{\sim} Z$, where $Z$ is the population distribution.
     * **Sample Mean** — $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$ is an unbiased estimator of $\mathbb{E}[X]$; i.e $\mathbb{E}[\bar{X}] = \mathbb{E}[X]$
-    * **Sample Variance** — $S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$ is an unbiased estimator of $Var(X)$; i.e. $Var(S^2) = \sigma^2$
+    * **Sample Variance** — $S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$ is an unbiased estimator of $Var(X)$; i.e. $\mathbb{E}[S^2] = \sigma^2$
  * A **simple random sample (SRS)** means that all possible samples of size n have an equal chance of being selected from the sampling distribution
 
 ### Properties of Expectation and Variance
