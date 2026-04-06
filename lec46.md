@@ -31,7 +31,7 @@ The **distribution** of a RV describes how probability is assigned to the possib
 
 * $\mathbb{E}[(\mu^\ast-\mu)^2] = (\mathbb{E}[\mu]-\mu^\ast)^2 + \mathbb{E}[(\mu-\mathbb{E}[\mu])^2]$
 
-* The first term is bias$^2$ and the second term is variance.
+* The first term is $\text{bias}^2$ and the second term is variance.
 
 ### Properties of Expectation and Variance
 
