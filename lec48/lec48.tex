@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\title{Lecture 4/8/26}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Sampling}
+\begin{itemize}
+    \item $X^{(i)}$ - sample one item from the population
+    \item $X^{(1)}$ follows a sampling distribution from the population
+    \item Sample: $\{X^{(1)} \dots X^{(N)}\}$
+\end{itemize}
+
+\section{Population Parameters and Test Statistic}
+\begin{itemize}
+    \item $\mu^*$ - population \textbf{parameter}, an attribute of the population
+    \item $\mu$ - sample \textbf{statistic}, an attribute of the statistic used to estimate the population parameter
+    \item $\mu = \mathbb{E}[X^{(1)} + \dots + X^{(N)}]$ is random, $\mu^*$ is not random
+\end{itemize}
+
+\section{Bias-Variance Decomposition}
+\begin{itemize}
+    \item $\mathbb{E}[(\mu - \mu^*)^2] = \underbrace{(\mathbb{E}[\mu] - \mu^*)^2}_{\text{Bias}^2} + \underbrace{\mathbb{E}[(\mu - E[\mu]^2)]}_{\text{Var}(\mu)}$
+    \item Bias - Accuracy of point estimate $\mu$ to parameter $\mu^*$
+    \item Variance - How spread out we can expect statistic $\mu$ to be
+    \item Optimal statistic: Low bias, low variance
+    \item Consider the following example:
+    \item Let $\mu^* = 0.6$
+    \begin{align*}
+        A &= 1.0 \\
+        B &= 1.0 \\
+        C &= 1.0 \\
+        D &= 0.0 \\
+        E &= 1.0
+    \end{align*}
+    Take all SRS of size 2, find $\mu$:
+    \begin{align*}
+        \{A, B\} = 1.0 \\
+        \{A, C\} = 1.0 \\
+        \{A, D\} = 0.5 \\
+        \{A, E\} = 0.5 \\
+        \{B, C\} = 1.0 \\
+        \{B, D\} = 0.5 \\
+        \{D, E\} = 0.5 \\
+        \{C, D\} = 0.5 \\
+        \{C, E\} = 0.5 \\
+        \{D, E\} = 0.0
+    \end{align*}
+    \item $\mathbb{E}[\mu] = 0.6$. So, $\mu$ is an unbiased estimator for $\mu^*$.
+    \item $\operatorname{Var}(\mu)=\operatorname{Var}\!\left(\frac{1}{n}\sum_{i=1}^{n}X^{(i)}\right)\overset{X^{(i)}\text{s independent}}{=}\frac{1}{n^2}\sum_{i=1}^{n}\operatorname{Var}(X^{(i)})\overset{X^{(i)}\text{s identical}}{=}\frac{\operatorname{Var}(X^{(i)})}{n}$
+    \item So, for SRS, the bias term is 0, and the expected error is just the variance in $\mu$ via bias-variance decomposition.
+    \item If the expected error is less than $\text{Var}(\mu)$, then there is \textbf{confirmation bias}.
+\end{itemize}
+\end{document}
