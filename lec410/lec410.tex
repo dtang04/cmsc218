@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\title{Lecture 4/19/26}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Normality of Errors}
+
+\begin{itemize}
+    \item Simple random sampling has normally distributed errors
+    \item More specifically, as $n$ increases, the sampling distribution is approximately Normal.
+\end{itemize}
+
+\subsection{Central Limit Theorem}
+
+Let $X_1 \dots X_n$ be i.i.d from the population. Let $\bar{X} = \frac{1}{n}\sum^n_{i = 0}X_i$. Then, 
+\[
+    \frac{\sqrt{n}(\bar{X} - \mu)}{\sigma} \sim N(0,1), n \rightarrow \infty
+\]
+
+Alternatively,
+\[
+    \bar{X} \sim N\biggr(\mu, \frac{\sigma}{\sqrt{n}}\biggr), n \rightarrow \infty
+\]
+
+Typically, we use the \textbf{standard error}, $\frac{\hat{\sigma}_{samp}}{\sqrt{n}}$ to estimate the population standard deviation $\frac{\sigma}
+{\sqrt{n}}$.
+
+\subsection{68-95-99.7 Rule of Normal Distribution}
+
+\begin{itemize}
+    \item 68\% of the time, $\bar{X}$ will fall between one standard deviation of the population mean $\mu$.
+    \item 99.5\% of the time, $\bar{X}$  will fall between two standard deviations of the population mean $\mu$.
+    \item 99.7\% of the time, $\bar{X}$ will fall between three standard deviations of the population mean $\mu$.
+\end{itemize}
+
+\newpage
+
+\section{Stratified Sampling}
+
+A survey is prone to \textbf{voluntary response bias}. Those who respond to a survey are more likely to have a certain opinion of the issue.
+
+One way to mitigate voluntary response is through \textbf{stratified sampling}.
+\begin{itemize}
+    \item Divide the original population into subpopulations, or \textbf{strata}.
+    \item For each strata, take an SRS. Thus, for each $n$ strata, we have a population parameter, $\mu_{j}, j \in \{1 \dots n\}$. We also have the strata weight $w_1 \dots w_n$ that corresponds to the amount that the strata is represented in the population.
+    \item Then, our point estimate is $\bar{X} = w_1\bar{X}_1 + \dots + w_n\bar{X}_n$.
+    \item The individuals within a strata should be homogenous. So, the central assumption is that individuals' willingness to respond to a survey within a strata is the same.
+\end{itemize}
+\end{document}
+
