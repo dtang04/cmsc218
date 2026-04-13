@@ -1,0 +1,80 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{Lecture 4/13}
+\author{Dylan Tang}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Case Study: Vaping}
+\begin{itemize}
+    \item Conducted a randomized study that investigated vaping at UChicago Medicine
+    \item $N_M = N_F = 112$
+    \item $N_{M, \text{vape}} = 61$, $N_{F, \text{vape}} = 39$
+\end{itemize}
+
+ for proportions: \\
+$H_0$: There is no difference in the proportion of males that vape versus the proportion of female that vape, i.e. $p_m = 0.5$. \\
+$H_A$: The proportion of males that vape is greater than the proportion of females that vape. \\
+
+\[
+    C = \hat{p}_m \pm z^*_{1 - \frac{\alpha}{2}}\frac{\sigma_{pop}}{n}
+\]
+
+We can estimate $\sigma_{pop}$ with the standard error for proportions:
+\[
+     C = \hat{p}_M \pm z^*_{1 - \frac{\alpha}{2}} \sqrt{\frac{\hat{p}_M(1 - \hat{p}_M)}{n}}
+\]
+To simplify calculations, it is often to easier to invoke the upper bound bound by:
+\[
+    \sqrt{\frac{\hat{p}_M(1 - \hat{p}_M)}{n}} \leq \sqrt{\frac{0.5(1-0.5)}{n}}
+\]
+
+If $C$ captures 0.5, fail to reject $H_0$ at the $\alpha$ significance level, else reject.
+
+Equivalently, we can conducted a one-sided test for proportions.
+
+\[
+    z = \frac{\hat{p}_{M} - 0.5}{\sqrt{\frac{0.5(1-0.5)}{n}}}
+\]
+
+If $z > 2$, reject at $\alpha = 0.5$ significance level.
+
+\section{Case Study: Sensors}
+\begin{itemize}
+    \item There are four departments. Each department had 100 independent measurements.
+    \item The averages for each department is the following:
+    \begin{itemize}
+        \item $\bar{x}_1 = 6.1$
+        \item $\bar{x}_2 = 6.05$
+        \item $\bar{x}_3 = 6.07$
+        \item $\bar{x}_4 = 6.11$
+    \end{itemize}
+    \item $\hat{\mu}_{sensor} = 6.09$, $\sigma_{sensor} = 3.7$
+    \item What is suspicious about this study?
+    \begin{itemize}
+        \item Standard deviation of sample means: $\frac{\sigma}{\sqrt{100}} = \frac{3.7}{10} = 0.37$. 
+        \item But, the sample means observed above seem to be clustered much more closely than the standard deviation of sample means seem to suggest.
+        \item To fully test, must run F-test with $H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4$
+    \end{itemize}
+\end{itemize}
+
+\section{The Linear Model}
+The population is given by
+\[
+    Y = mX + b + \epsilon
+\]
+where $Y, X, \epsilon$ are R.Vs.
+
+\subsection{Properties of the Population Model}
+\begin{itemize}
+    \item $E[\epsilon] = 0$
+    \item $E[Y] = E[mX + b + \epsilon] = mE[X] + b$
+    \item $Var(Y) = Var(mX + b + \epsilon) = \underbrace{m^2Var(X)}_{\text{signal}} + \underbrace{Var(\epsilon)}_{\text{noise}}$
+    \item \textbf{Signal-Noise Ratio} = $\frac{m^2Var(X)}{Var(\epsilon)}$
+\end{itemize}
+\end{document}
