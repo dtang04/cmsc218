@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{Lecture 4/15}
+\author{Dylan Tang}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Linear Models Review}
+\textbf{Model}: $Y = mX + b + \epsilon$, $\epsilon \perp X$
+\begin{itemize}
+\item $E[Y] = mE[X] + b$
+\item $Var(Y) = m^2Var(X) + Var(\epsilon)$
+\item Signal to Noise Ratio (SNR): $\frac{m^2Var(X)}{Var(\epsilon)}$
+\end{itemize}
+\section{Covariance and Correlation}
+\begin{itemize}
+    \item \textbf{Covariance}: $Cov(X,Y) = E_{X,Y}[(X - E[X])(Y - E[Y])]$
+    \item Measures the scale of association between two R.Vs
+    \item $X \perp Y \rightarrow Cov(X,Y) = 0$, but the converse is not always true.
+    \item For the linear model, $Cov(X,Y) = Cov(X, mX + \epsilon) = mCov(X, X + \epsilon) = mCov(X,X) + mCov(X,\epsilon) \overset{X \perp \epsilon}{=} mVar(X)$
+    \item \textbf{Correlation}: $\rho = \frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}$
+    \item For the linear model, 
+    \[
+        \rho = \frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}} = \frac{mVar(X)}{\sqrt{Var(X)[m^2Var(X) + Var(\epsilon)]}} = \pm \sqrt{\frac{1}{1 + SNE^{-1}}}
+    \]
+    \item Measures the strength of association between two R.Vs \\
+\end{itemize}
+\textbf{Additional Properties}:
+\begin{itemize}
+    \item $Cov(X,Y) = mVar(X) \rightarrow m = \frac{Cov(X,Y)}{Var(X)}$
+    \item $\epsilon$ is in the units of $Y$
+    \item $m$ is in the units of $\frac{\text{units Y}}{\text{units X}}$
+    \item $Cov(X,Y) = \text{units X} \cdot \text{unit Y}$
+    \item $Var(X) = (\text{units X})^2$
+\end{itemize}
+\section{Linear Model of $X_1 \dots X_n$}
+\begin{itemize}
+    \item Assume $(X_1, Y_1) \dots (X_n, Y_n)$ i.i.d. Then,
+    \item $E[\bar{X}] = \frac{1}{n}\sum_{i = 1}^{n}E[X_i] = E[X]$
+    \item $Var(\bar{X}) = \frac{1}{n^2}\sum_{i = 1}^n Var(X_i) = \frac{Var(X)}{n}$
+    \item $Cov(\bar{X}, \bar{Y})$ is
+    \[ Cov(\bar{X}, \bar{Y}) = E_{X_1 \dots X_n, Y_1 \dots Y_n}[(\bar{X} - E[\bar{X}])(\bar{Y} - E[\bar{Y}])] = \frac{1}{n^2}\sum_{i = 1}^n\sum_{j = 1}^{n}Cov(X_i, Y_j) \overset{(X_i,Y_i) \text{ i.i.d}}{=}\frac{Cov(X,Y)}{n}
+    \]
+\end{itemize}
+\end{document}
