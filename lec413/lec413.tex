@@ -33,10 +33,21 @@ To simplify calculations, it is often to easier to invoke the upper bound bound 
 \[
     \sqrt{\frac{\hat{p}_M(1 - \hat{p}_M)}{n}} \leq \sqrt{\frac{0.5(1-0.5)}{n}}
 \]
+A conservative confidence interval can even be constructed knowing only the sample statistic and the range of the interval $[a,b]$.
+\begin{itemize}
+    \item The variance of the sample statistic must satisfy $Var(X_{stat}) \leq \frac{(b-a)^2}{4}$
+    \item We can use this to construct a CI for sample proportions, if for some reason we don't know SE:
+    \[
+        C = \hat{p} \pm z^*_{1 - \frac{\alpha}{2}}\frac{(1-0)^2}{4}
+    \]
+    \[
+        \implies C = \hat{p} \pm \frac{1}{4}z^*_{1 - \frac{\alpha}{2}}
+    \]
+\end{itemize}
 
 If $C$ captures 0.5, fail to reject $H_0$ at the $\alpha$ significance level, else reject.
 
-Equivalently, we can conducted a one-sided test for proportions.
+Equivalently, we can conduct a one-sided test for proportions.
 
 \[
     z = \frac{\hat{p}_{M} - 0.5}{\sqrt{\frac{0.5(1-0.5)}{n}}}
