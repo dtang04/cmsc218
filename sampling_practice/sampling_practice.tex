@@ -1,0 +1,283 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Sampling Practice Problems}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Problem 1: Bias-Variance Decomposition}
+
+A population has true mean $\mu^* = 10$. You are comparing two estimators:
+
+\textbf{Estimator A} (Simple Random Sample mean): You draw $n = 25$ samples i.i.d. from the population and compute $\hat{\mu}_A = \bar{X}$. This is an \textbf{unbiased} estimator, so $\mathbb{E}[\hat{\mu}_A] = \mu^*$. The population has variance $\sigma^2 = 100$.
+
+\textbf{Estimator B} (Biased sampling method): Due to a flawed sampling procedure, this estimator has $\mathbb{E}[\hat{\mu}_B] = 12$ (i.e., it systematically overestimates). However, it has lower variance: $\text{Var}(\hat{\mu}_B) = 2$.
+
+\begin{enumerate}[label=(\alph*)]
+    \item For Estimator A, compute $\text{Var}(\hat{\mu}_A)$
+    \[
+        Var(\hat{\mu}_A) = \frac{\sigma^2}{n} = \frac{100}{25} = 4
+    \]
+    \item For Estimator A, compute the expected squared error using bias-variance decomposition:
+
+    \item For Estimator B, compute the bias:
+    \[
+        \text{Bias} = E[\hat{\mu}_H] - \mu^* = 12 - 10 = 2
+    \]
+
+    \item For Estimator B, compute the expected squared error using bias-variance decomposition.
+    \[
+        E[(\hat{\mu}_B - \mu^*)^2] = (E[\mu^*] - \mu_B)^2 + Var(\hat{\mu}_B)
+    \]
+    \[
+        \implies (12 - 10)^2 + 2 = 6
+    \]
+    
+    \item Which estimator has lower expected squared error? Is it always better to use an unbiased estimator?
+    \[
+        E[(\hat{\mu}_A - \mu^*)^2] = (E[\mu^*] - \mu_A)^2 + Var(\hat{\mu}_A)
+    \]
+    \[
+        \implies (10 - 10)^2 + 4 = 4
+    \]
+
+    Here, A has the lower expected squared error. If our metric for the statistic's accuracy is solely based on squared error alone it is not always better to use an unbiased estimator, as the bias-variance decomposition suggests.
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 2: Polling Bias}
+
+A polling company surveys 200 voters about an upcoming mayoral election between Candidate A and Candidate B. The results show:
+\begin{itemize}
+    \item 120 respondents support Candidate A (60\%)
+    \item 80 respondents support Candidate B (40\%)
+\end{itemize}
+
+However, you discover that the polling company only surveyed people who answered their landline phones during work hours (9am-5pm).
+
+\begin{enumerate}[label=(\alph*)]
+    \item Identify the potential sources of bias in this sampling method.
+    
+    This sampling method is prone to voluntary response bias, as those who choose to respond may have a strong opinion for a particular candidate over another.
+
+    This sampling method is also prone to nonresponse, as the survey was assigned to people during working hours. Those who work a 9-5 job thus are unavailable to answer the survey.
+    
+
+    \item Would you expect this bias to over-represent or under-represent certain demographic groups? Explain.
+
+    This bias would under-represent those who work a 9-5 job, as they would likely be working at the time the pollng company surveyed people by phone, and thus be unable to respond to the survey.
+
+    This bias would also under-represent individuals who do not have a strong opinion for either candidate, as individuals who didn't follow the candidates would likely be less willing to respond to the survey.
+    \vspace{3cm}
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 3: Stratified Sampling}
+
+A state has three counties with the following voter populations:
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+County & Population & Sample Size & Sample Mean Support for Prop X \\
+\midrule
+Urban & 500,000 & 200 & 0.72 \\
+Suburban & 300,000 & 150 & 0.58 \\
+Rural & 200,000 & 100 & 0.35 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{enumerate}[label=(\alph*)]
+    \item Compute the strata weights $w_1, w_2, w_3$ for each county.
+
+    Strata weights are computed by the proportion of the total population that strata represents.
+
+    \[
+        w_1 = \frac{500,000}{500,000 + 300,000 + 200,000} = 0.5
+    \]
+
+    \[
+        w_2 = \frac{300,000}{1,000,000} = 0.3
+    \]
+
+    \[
+        w_3 = 1 - 0.5 - 0.3 = 0.2
+    \]
+
+    \item Using stratified sampling, compute the overall point estimate $\bar{X}$ for support of Prop X.
+
+    \[
+        \bar{X} = w_1\bar{X}_1 + w_2\bar{X}_2 + w_3\bar{X}_3 = 0.5(0.72) + 0.3(0.58) + 0.2(0.35) = 0.604
+    \]
+    
+    \item A naive pollster simply averages the three sample means: $\frac{0.72 + 0.58 + 0.35}{3}$. What estimate does this give, and why is it incorrect?
+
+    This is incorrect because it implicitly assumes that the samples collected from the three subpopulations are of equal size, and therefore equal weight. However, the subpopulations are not of different size.
+    
+    \item If the Rural county sample had $\hat{\sigma} = 0.48$, compute the standard error for the Rural county estimate.
+
+    \[
+        SE = \frac{0.48}{\sqrt{100}} = \frac{0.48}{10} = 0.048
+    \]
+    
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 4: Hypothesis Testing for Proportions}
+
+Two polling firms survey voters about Candidate Z:
+\begin{itemize}
+    \item Firm A: 400 respondents, 232 support Candidate Z ($\hat{p}_A = 0.58$)
+    \item Firm B: 250 respondents, 115 support Candidate Z ($\hat{p}_B = 0.46$)
+\end{itemize}
+
+\begin{enumerate}[label=(\alph*)]
+    \item The difference between the two polls is 12 percentage points. State the null and alternative hypotheses to test whether this difference is due to random chance.
+
+    $H_0$: There is no difference between the proportion of candidates that support candidate Z between the two polls.
+
+    $H_A$: There is a difference between the proportion of candidate that support candidate Z between the two polls. 
+
+    \item Compute the standard error for $\hat{p}_A$
+
+    \[
+        SE_A = \sqrt\frac{(0.58)(0.42)}{232} = 0.0324
+    \]
+    \item Construct a 95\% confidence interval for the true proportion based on Firm A's data. (Use $z^* = 1.96$)
+
+    \[
+        C = 0.58 \pm 1.96 \sqrt\frac{(0.58)(0.42)}{232}
+    \]
+
+
+    \item Does Firm B's estimate fall within Firm A's 95\% confidence interval? What does this suggest about whether the difference is due to chance?
+
+    \[
+       C =  0.58 \pm 0.0635 = (0.52, 0.64)
+    \]
+
+    Firm B's estimate falls outside Firm A's 95\% CI. This suggests that the difference is improbable due to chance alone.
+    
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 5: Enumerating SRS}
+
+Consider a population of 5 voters with the following opinions (1 = support, 0 = oppose):
+\[
+A = 1, \quad B = 1, \quad C = 0, \quad D = 1, \quad E = 0
+\]
+
+\begin{enumerate}[label=(\alph*)]
+    \item Compute the true population parameter $\mu^*$.
+
+    \[
+        \mu^* = 0.6
+    \]
+
+    \item List all possible simple random samples of size $n = 2$. For each, compute the sample mean $\bar{X}$.
+
+    \[
+        \Omega = \{\{A, B\}, \{A, C\},  \{A, D\},  \{A, E\},  \{B, C\},  \{B, D\},  \{B, E\},  \{C, D\}, \{C, E\}, \{D, E\}\}
+    \]
+
+    \item Compute $\mathbb{E}[\bar{X}]$ over all possible samples. Is $\bar{X}$ an unbiased estimator for $\mu^*$?
+
+    \[
+        E[\bar{X}] = \frac{1}{10}(1+\frac{1}{2}+1+\frac{1}{2}+\frac{1}{2}+1+\frac{1}{2}+0+\frac{1}{2}+\frac{1}{2})
+         = 0.6
+    \]
+
+    Yes, $\bar{X}$ is an unbiased estimator for $\mu^*$
+    
+    \item Compute $\text{Var}(\bar{X})$ using your results from part (b).
+
+    \[
+        E[X^2] = \frac{1}{10}(1+\frac{1}{4}+1+\frac{1}{4}+\frac{1}{4}+1+\frac{1}{4}+0+\frac{1}{4}+\frac{1}{4}) = 0.45
+    \]
+    
+    So, $Var(\bar{X}) = 0.45 - 0.6^2 = 0.09$
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 6: Detecting Suspicious Data}
+
+A research team claims to have conducted independent polls in 4 districts, each with $n = 100$ respondents. They report:
+\begin{itemize}
+    \item District 1: $\bar{x}_1 = 0.51$
+    \item District 2: $\bar{x}_2 = 0.49$
+    \item District 3: $\bar{x}_3 = 0.50$
+    \item District 4: $\bar{x}_4 = 0.52$
+\end{itemize}
+
+The overall population has $\mu = 0.50$ and $\sigma = 0.50$ (since it's a proportion near 0.5).
+
+\begin{enumerate}[label=(\alph*)]
+    \item Compute the expected standard deviation of sample means (standard error) for samples of size 100.
+
+    \[
+        SE = \frac{0.50}{\sqrt{100}} = 0.05
+    \]
+
+    \item What range would you expect 95\% of sample means to fall within?
+
+    \[
+        (0.40, 0.60)
+    \]
+
+    \item The reported sample means range from 0.49 to 0.52 (a spread of only 0.03). Is this suspicious? Explain why or why not using your answer from part (b).
+
+    No, because the range of sample means collected falls well within (0.40, 0.60). 
+
+\end{enumerate}
+
+\newpage
+
+\section*{Problem 7: Sample Size and Margin of Error}
+
+A campaign wants to estimate voter support with a margin of error no larger than 3 percentage points at 95\% confidence.
+
+\begin{enumerate}[label=(\alph*)]
+    \item Solve for the minimum sample size $n$.
+
+    \[
+        1.96\sqrt{\frac{0.5(0.5)}{n}} = 0.03
+    \]
+
+    \[
+        \frac{0.5^2}{n} = 0.00023
+    \]
+
+    \[
+        n = 1068
+    \]
+
+    \item If the campaign can only afford to survey 400 people, what margin of error should they expect?
+
+    \[
+        1.96\sqrt{\frac{0.5(0.5)}{400}} = 0.049
+    \]
+
+    \item Why do we use $p = 0.5$ as a conservative estimate when the true proportion is unknown?
+
+    \[
+        \arg\max_p \sqrt{\frac{p(1-p)}{n}} = 0.5
+    \]
+\end{enumerate}
+
+\end{document}
