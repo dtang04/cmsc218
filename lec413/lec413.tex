@@ -38,10 +38,10 @@ A conservative confidence interval can even be constructed knowing only the samp
     \item The variance of the sample statistic must satisfy $Var(X_{stat}) \leq \frac{(b-a)^2}{4}$
     \item We can use this to construct a CI for sample proportions, if for some reason we don't know SE:
     \[
-        C = \hat{p} \pm z^*_{1 - \frac{\alpha}{2}}\frac{(1-0)^2}{4}
+        C = \hat{p} \pm z^*_{1 - \frac{\alpha}{2}}\sqrt{\frac{(1-0)^2}{4}}
     \]
     \[
-        \implies C = \hat{p} \pm \frac{1}{4}z^*_{1 - \frac{\alpha}{2}}
+        \implies C = \hat{p} \pm \frac{1}{2}z^*_{1 - \frac{\alpha}{2}}
     \]
 \end{itemize}
 
