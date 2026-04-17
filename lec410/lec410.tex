@@ -3,7 +3,7 @@
 \usepackage{amsfonts}
 \usepackage{amsmath}
 
-\title{Lecture 4/19/26}
+\title{Lecture 4/10/26}
 \author{}
 \date{}
 
@@ -53,7 +53,7 @@ One way to mitigate voluntary response is through \textbf{stratified sampling}.
     \item For each strata, take an SRS. Thus, for each $n$ strata, we have a population parameter, $\mu_{j}, j \in \{1 \dots n\}$. We also have the strata weight $w_1 \dots w_n$ that corresponds to the amount that the strata is represented in the population.
     \item Then, our point estimate is $\bar{X} = w_1\bar{X}_1 + \dots + w_n\bar{X}_n$.
     \item $E[\bar{X}] = w_1E[\bar{X}_1] + \dots + w_nE[\bar{X}_n]$
-    \item $Var(\bar{X}) = w_1^2Var(\bar{X}_1) + \dots + w_n^2Var(\bar{X}_n)$
+    \item $Var(\bar{X}) = w_1^2Var(\bar{X}_1) + \dots + w_n^2Var(\bar{X}_n) = w_1^2\frac{\sigma_1^2}{n_1} + \dots + w_n^2\frac{\sigma_n^2}{n_n}$
     \item The individuals within a strata should be homogenous. So, the central assumption is that individuals' willingness to respond to a survey within a strata is the same.
         \begin{itemize}
             \item Group high school students by grade (Freshman, Sophomore, Junior, Senior)
