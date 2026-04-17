@@ -1,0 +1,82 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\title{lec417}
+\author{Dylan Tang}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Linear Regression}
+\begin{itemize}
+    \item Assumption that population follows $y = mX + \epsilon$
+    \item Given $(X_i, y_i)_{i = 0}^n$, solve 
+    \[
+        \hat{m} = \frac{Corr(X,y)}{Var(X)}
+    \]
+    \[
+        \hat{b} = E[\bar{y}] - mE[\bar{X}]
+    \]
+    \item Then, given new predictor $X_{new}$, can find $\hat{y}_{new}$, which is a prediction for $y_{new}$.
+    \item Expected rror:
+    \[
+        E[(\hat{y_i} - y_i)^2] = E[((\hat{m}X_i + \hat{b}) - (mX_i + b + \epsilon))^2]
+    \]
+    Assuming that $X_i$ is a new observation, $X_i \perp \hat{m}, \hat{b}$
+    \[
+        E[(\hat{y} - y_i)^2] =  Bias(\hat{m})^2 + Bias(\hat{b})^2 + Var(\hat{m}) + Var(\hat{b}) + Var(\epsilon)
+    \]
+    Assuming $E[\hat{b}] = b$, $E[\hat{m}] = m$,
+    \[
+        E[(\hat{y} - y)^2] = Var(\hat{m}) + Var(\hat{b}) + Var(\epsilon)
+    \]
+    So, this becomes
+    \[
+        \text{Expected Error} = \text{Sampling Error} + Var(\epsilon)
+    \]
+\end{itemize}
+
+\section{1-D Ordinary Least Squares (OLS)}
+\begin{itemize}
+    \item Given $(X_i, y_i)_{i = 0}^n$, solve
+    \[
+        \hat{m} = \arg\min_m \frac{1}{n}\sum_{i=1}^n (y_i - m x_i)^2
+    \]
+
+    FOC:
+    \[
+        \frac{d}{dm}\left(\frac{1}{n}\sum_{i=1}^n (y_i - m x_i)^2\right)
+        = \frac{1}{n}\sum_{i=1}^n \frac{d}{dm}(y_i - m x_i)^2
+        = \frac{1}{n}\sum_{i=1}^n -2x_i(y_i - m x_i)
+        = 0
+    \]
+    \[
+        \frac{1}{n}\sum_{i=1}^n -2x_i(y_i-mx_i)=0
+    \]
+    
+    \[
+        \sum_{i=1}^n x_i(y_i-mx_i)=0
+    \]
+    
+    \[
+        \sum_{i=1}^n x_i y_i - \sum_{i=1}^n m x_i^2 = 0
+    \]
+    
+    \[
+        \sum_{i=1}^n x_i y_i - m\sum_{i=1}^n x_i^2 = 0
+    \]
+    
+    \[
+        m\sum_{i=1}^n x_i^2 = \sum_{i=1}^n x_i y_i
+    \]
+    
+    \[
+        \hat{m}=\frac{\sum_{i=1}^n x_i y_i}{\sum_{i=1}^n x_i^2}
+    \]
+    
+\end{itemize}
+
+\end{document}
