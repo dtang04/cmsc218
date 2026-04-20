@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\title{lec420}
+\author{Dylan Tang}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Multilinear Regression}
+\begin{itemize}
+    \item \textbf{Case 1}: $y = m^Tx + b + \epsilon$: $y$ is scalar, $m$ is n by 1, $x$ is n by 1, $b$ and $\epsilon$ are scalers.
+    \item \textbf{Case 2}: $y = Ax + b + \epsilon$
+    \[
+        A \in \mathbb{R}^{n \times m}, x \in \mathbb{R}^{m \times 1}
+    \]
+    \[
+        y, b, \epsilon \in \mathbb{R}^{n \times 1}
+    \]
+    \begin{itemize}
+        \item $n$ observations, $m$ features per observations
+    \end{itemize}
+    \item To find standard OLS, solve:
+    \[
+        {\arg\min}_{\beta \in \mathbb{R}^{n \times m}} |y - Ax|^2_2
+    \]
+    \[
+        \hat{\beta} = (X^TX)^{-1}X^Ty
+    \]
+    \[
+        \hat{y} = X\beta = X(X^TX)^{_1}X^Ty
+    \]
+    \item Each standardized $\beta_i$ is not equal to $\text{Corr}(X_i, y_i)$. This means that we can say nothing about the scale of the $\beta_i$'s
+    \begin{itemize}
+        \item A large $\beta_i$ only states that one predictor is important \textbf{in context of other predictors}.
+    \end{itemize}
+ \end{itemize}
+
+\section{Coefficient of Determination}
+\begin{itemize}
+    \item
+    \[
+        R^2 = 1 - \frac{SSE}{SST} = 1 - \frac{\sum_{i = 1}^n (y_i - \hat{y}_i)^2}{\sum_{i = 1}^n (y_i - \bar{y}_i)^2}
+    \]
+    \item $R^2$ measures how much better our LRSL does compared to the baseline mean.
+\end{itemize}
+
+\section{Smoothing}
+\begin{itemize}
+    \item \textbf{Ridge Regression} adds a L2 regularizer term to prevent the following degenerate cases:
+    \begin{itemize}
+        \item $N < K+1$, where $N$ is the number of the observations, and $K$ is the number of features
+        \item $\text{\# of linearly indep. rows} < K$
+    \end{itemize}
+    \item 
+    \[
+        {\arg\min}_{\beta \in \mathbb{R}^{n \times m}} |y - Ax|^2_2 + |\lambda|^2_2
+    \]
+    \[
+        \hat{\beta} = (X^TX + \lambda I)^{-1}X^Ty 
+    \]
+    \item The regularizer term penalizes large coefffients.
+\end{itemize}
+
+\section{Python Commands}
+\begin{itemize}
+    \item \texttt{from sklearn.linear\_model import LinearRegression} \\
+          \texttt{reg = LinearRegression()} \\
+          \texttt{reg.fit(X, Y)}
+    \item \texttt{df[features].to\_numpy()}
+    \item \texttt{reg.coef\_[0,i]}
+    \item \texttt{r2\_score(Y,Yhat)}
+\end{itemize}
+
+\end{document}
