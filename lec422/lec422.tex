@@ -1,0 +1,121 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsfonts}
+
+\title{lec422}
+\author{Dylan Tang}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Supervised Learning}
+Fundamentally, we aim to optimize weights that can give us predictions $\hat{y}$
+\[
+    \hat{y} = X\hat{w}
+\]
+where $w \in \mathbb{R}^{n \times 1}$.
+\\
+\\
+Recall the OLS problem, which minimizes squared loss:
+
+Then, OLS regression gives us:
+\[
+    \arg\min_w |y - Xw|_2^2 
+\]
+
+\[
+    \hat{w} = (X^TX)^{-1}X^Ty
+\]
+
+Also recall the ridge regression problem, which minimizes squared loss and an L2 regularizer:
+\[
+    \arg\min_w |y - Xw|_2^2  + |\lambda|^2_2
+\]
+
+\[
+    \hat{w} = (X^TX + \lambda I)^{-1}X^Ty
+\]
+
+\textbf{Gradient Descent}:
+\begin{itemize}
+    \item Taking the inverse to get the optimum is extremely computationally intensive, and not feasible for large $n$.
+    \item Instead, we can use gradient descent:
+    \[
+        w^{(t+1)} = w^{(t)} - \eta\nabla(\sum_{i = 1}^n (y- x^Tw)^T(y-x^Tw) + \lambda^T\lambda)
+    \]
+\end{itemize}
+
+\textbf{Inductive Model}: Given $X, y$ as inputs, outputs $f(\theta)$
+\begin{itemize}
+    \item Linear models are inductive models. Given $(x_i, y_i)$ pairs, produces $f(\theta) = \hat{y} = \hat{\beta}_1X + \hat{\beta}_0 = X\hat{\beta}$
+    \item Then, given a new data point $x_{new}$, we can find $\hat{y}_{new}$
+    \[
+        \hat{y}_{new} = x_{new}^T\hat{\beta}
+    \]
+\end{itemize}
+
+\textbf{Transductive Model}: Given $X, y$ as inputs, outputs a data structure that organizes the inputs into $(X,y)$ pairs
+\begin{itemize}
+    \item K-nearest-neighbors (KNN), K-means clustering are transductive models
+\end{itemize}
+
+\subsection{Supervised Learning using Scikit}
+
+\textbf{Step 1: Train-test Split}:
+\begin{itemize}
+    \item Always do train-test split before supervised learning.
+\end{itemize}
+\begin{verbatim}
+    from sklearn.model_selection import train_test_split
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+\end{verbatim}
+
+\textbf{Step 2: Fit the model}
+\begin{verbatim}
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LinearRegression
+    
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+    
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+\end{verbatim}
+
+\textbf{Step 3: Find errors on test set}
+\begin{verbatim}
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LinearRegression
+    import numpy as np
+    
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+    
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    err = np.linalg.norm(y_test - y_pred)
+\end{verbatim}
+
+\section{Smoothing}
+\begin{itemize}
+    \item Recall $R^2 = \frac{SSE}{SST}$.
+        \begin{itemize}
+            \item $SST = \sum_{i = 1}^n(y_i - \bar{y})^2$ can be thought of as the error of the smoothest possible predictor $\bar{y}$.
+        \end{itemize}
+    \item Imagine several decision boundaries classifying labels $\{1 \dots n\}$.
+    \begin{itemize}
+        \item If those decision boundaries are spread out far apart, then it is a smooth model - less data dependent.
+        \item  If those decision boundaries are very close together, then it is not smooth - more data dependent
+    \end{itemize}
+  
+\end{itemize}
+
+\end{document}
