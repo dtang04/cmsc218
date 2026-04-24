@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\title{Lecture 4/24}
+\author{Dylan Tang}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Generalization}
+\textbf{Supervised Learning}
+\begin{itemize}
+    \item Given training set $\{x,y\}_{i=1}^n$, find a model $f_\theta(x) = y$
+    \item Then, predict $\hat{y}_{new} = f_\theta(x_{new})$
+\end{itemize}
+
+\subsection{Loss Functions}
+The \textbf{loss function} is given as $l(\hat{y}, y)$. 
+
+Recall that $\hat{y} = w^Tx+b$
+
+\begin{itemize}
+    \item Squared loss: $l(y, \hat{y}) = \sum_{i = 1}^n (y - \hat{y})^2$
+    \item Hinge loss: $l(y, \hat{y}) = \sum_{i=1}^n\max\{0, 1 - y_i\hat{y_i}\}$
+    \item 0/1 loss: $l(y, \hat{y}) = \sum_{i=1}^n \mathbf{1}_{\{y_i \neq \hat{y_i}\}}$
+\end{itemize}
+
+\subsection{Expected Loss and Generalization}
+\begin{itemize}
+    \item Define $T_e$ to be the expected testing loss, $T_r$ to be the expected training loss.
+    \[
+        T_e = E_i[l(y_i^{\text{test}}, \hat{y}_i^{\text{test}})]
+    \]
+    \[
+        T_r = E_i[l(y_i^{\text{train}}, \hat{y}_i^{\text{train}})]
+    \]
+\end{itemize}
+Then, we have the following decomposition:
+\[
+    \underbrace{(T_e - T_r)}_{\text{G}} + T_r = T_e
+\]
+\begin{itemize}
+    \item $G$ represents the \textbf{generalization gap} between the test error and the training error.
+    \item Typically, model complexity have a larger generalization gap - there will likely be a different result between training and testing sets (overfitting to the training set)
+    \item On the other hand, models that are too simple have a high training error -they have not leveraged the full complexity of the training set (underfitting to the training set)
+    \item But, the training error $T_e$ decreases, as seen by the decomposition
+    \item So, we aim to jointly minimize the training error $T_e$ and the generalization $G$
+    \item Regularization allows us to smooth over regions that no training data exist.
+\end{itemize}
+
+\subsection{Bias-Variance Decomposition of Squared Loss}
+\[
+    E[l(y_{\text{train}}, y_{\text{pred}})] = E[l(y_{\text{train}}, \hat{f}(x))]
+\]
+where $\hat{f}(x) = \hat{w}^Tx+\hat{b}$ is the trained model, and $f(x) = w^Tx+b$ is the optimal model.
+
+Then, for squared loss, we have the following decomposition:
+\[
+\mathbb{E}\left[(y - \hat{f}(x))^2\right]
+=
+\underbrace{\left(f(x) - \mathbb{E}\left[\hat{f}(x)\right]\right)^2}_{\text{Bias}^2}
++
+\underbrace{\mathbb{E}\left[\left(\hat{f}(x) - \mathbb{E}\left[\hat{f}(x)\right]\right)^2\right]}_{\text{Variance}}
++
+\underbrace{\sigma^2}_{\text{Noise}}
+\]
+\end{document}
