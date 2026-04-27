@@ -1,0 +1,128 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{lec427}
+\author{Dylan Tang}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Quiz Format}
+\begin{itemize}
+    \item Mix of coding and theory
+    \item \texttt{scikit fit, train\_test\_split}
+\end{itemize}
+
+\section{Autoregression}
+
+\subsection{Case Study: Linear Regression on Month Number and Sunspots}
+\begin{verbatim}
+    from sklearn.linear_model import LinearRegression
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import r2_score
+    import numpy as np
+
+    X = df[['Month_No']].to_numpy()
+    Y = df[['Sunspots]].to_numpy()
+
+    Xtrain, Xtest, Ytrain, Ytest = train_test_split(X,Y)
+
+    reg = LinearRegression()
+    reg.fit(Xtrain, Ytrain) # train linear model in training set
+
+    Yhat = reg.predict(Xtest) # predict on test set
+
+    result = {'r2_score': r2_score(Ytest,Yhat)}
+    print(result)
+\end{verbatim}
+\begin{itemize}
+    \item Returns a very low $R^2$ score, so month is not a good predictor of sunspots.
+    \item But, sunspots on day $i$ is a good predictor of sunspots on day $i+1$
+\end{itemize}
+
+\newpage
+
+\subsection{AR(1) Model}
+\begin{verbatim}
+    from sklearn.linear_model import LinearRegression
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import r2_score
+
+    df['Sunspots_prev'] = df['Sunspots].shift(1)
+    df = df.dropna(how='any') # Drop the first value
+
+    X = df[['Sunspots_prev']].to_numpy()
+    Y = df[['Sunspots']].to_numpy()
+
+    Xtrain, Xtest, Ytrain, Ytest = train_test_split(X,Y)
+
+    reg = LinearRegression()
+    reg.fit(Xtrain, Ytrain) # train linear model in training set
+
+    Yhat = reg.predict(Xtest) # predict on test set
+
+    result = {'r2_score': r2_score(Ytest,Yhat)}
+    print(result)
+\end{verbatim}
+\begin{itemize}
+    \item When regress texttt{Sunspots} on texttt{Sunspots\_prev}, the $R^2$ improves to 0.84
+\end{itemize}
+
+\begin{itemize}
+    \item However, standard \texttt{train\_test\_split} is not enough, as \texttt{train\_test\_split} often randomly shuffles rows, which can accidentally train on the future and test on the past.
+\end{itemize}
+\subsection{AR(1) model with Time-series Train-Test Split}
+\begin{verbatim}
+    from sklearn.linear_model import LinearRegression
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import r2_score
+    from sklearn.model_selection import TimeSeriesSplit
+    
+    df['Sunspots_prev'] = df['Sunspots].shift(1)
+    df = df.dropna(how='any') # Drop the first value
+
+    X = df[['Sunspots_prev']].to_numpy()
+    Y = df[['Sunspots']].to_numpy()
+
+    tscv = TimeSeriesSplit()
+    for train_index, test_index in tscv.split(X):
+        Xtrain, Xtest = X[train_index], X[test_index]
+        Ytrain, Ytest = y[train_index], y[test_index]
+
+    reg = LinearRegression()
+    reg.fit(Xtrain, Ytrain) # train linear model in training set
+
+    Yhat = reg.predict(Xtest) # predict on test set
+
+    result = {'r2_score': r2_score(Ytest,Yhat)}
+    print(result)
+\end{verbatim}
+
+\section{Longitudinal vs Cross-sectional Models}
+\begin{itemize}
+    \item \textbf{Longitudinal model (L model)} - uses $y_{i-1}$ to predict $y_i$
+    \item \textbf{Cross-sectional model (C model)} - use predictors $x_{i}$s to predict $y_i$
+\end{itemize}
+
+\subsection{Capital Asset Pricing Model (CAPM)}
+\begin{itemize}
+    \item Predicting market prices can be broken down into a C model (uses outside predictors) and the L model (uses market prices from the previous day)
+    \item The L model is often taken as given, and building the C model to predict where the L model fails to predict is the main point of interest
+\end{itemize}
+
+\subsection{texttt{scikit} One Hot Encoder}
+\begin{itemize}
+    \item Turns non-numerical predictor levels into numerical values
+\end{itemize}
+\begin{verbatim}
+    from sklearn.preprocessing import OneHotEncoder
+
+    feat1 = OneHotEncoder(sparse=False) #
+    Xsmoker = feat1.fit_transform(df["smoker"].to_numpy().reshape(-1,1)) # one hot encode the "smoker" variable, and reshape into column
+    X = np.hstack([X, Xsmoker]) # append column to X
+
+    ...
+\end{verbatim}
+\end{document}
