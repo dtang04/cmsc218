@@ -1,0 +1,102 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\title{lec429}
+\author{Dylan Tang}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Classification}
+
+Given $X \in \mathbb{R}^{n \times d}$, $y \in \{0, 1\}^{n \times 1}$, find $\hat{w} \in \mathbb{R}^{d \times 1}$, $\hat{b} \in \mathbb{R}^{1 \times 1}$ such that
+
+\[
+    \hat{y} = X\hat{w} + \hat{b}
+\]
+
+minimizes $\ell(\hat{y}, y)$
+\begin{itemize}
+    \item $\hat{w}^Tx+\hat{b}$ forms a decision boundary of the \textit{binary linear} classification problem.
+    \item For multi-class classification, the probability that a datapoint $x$ is assigned to class $k$ is given by the probability vector
+    \[
+            \hat{p} = \sigma(w^Tx+b), \hat{p} \in \mathbb{R}^{1 \times k}
+    \]
+    \begin{itemize}
+        \item $\sigma$ is the softmax activation function.
+    \end{itemize}
+    \item For the entire training set:
+    \[
+        \hat{p} = \sigma(XW+b), \hat{p} \in \mathbb{R}^{n \times k}
+    \]
+\end{itemize}
+
+For determining how well $\hat{y}$ predicts $y$, we use a confusion matrix:
+\[
+        \begin{bmatrix}
+           \text{True Positive} & \text{False Positive} \\
+           \text{False Negative} & \text{True Negative}
+        \end{bmatrix}
+\]
+
+\section{Non-linear Classification}
+
+Define the mapping $x \mapsto \phi(x)$, which maps $x$ to a higher order function.
+
+Then, define the kernel function 
+    \[
+        K(x_i, x_j) = \phi(x_i)^T\phi(x_j)
+    \]
+
+Then, the prediction w.r.t a training point $x$ is:
+    \[
+        \hat{y} = \sum_{i = 1}^n \alpha_iK(x_i, x) + b
+    \]
+
+Then, we optimize over the following loss function with regularization:
+    \[
+        \hat{\alpha}, \hat{b}
+        =
+        \arg\min_{\alpha,b}
+        \sum_{i=1}^{n}
+        \ell\left(
+        y_i,
+        \sum_{j=1}^{n}\alpha_j K(x_j,x_i)+b
+        \right)
+        +
+        \lambda \alpha^T K \alpha.
+    \]
+
+\section{Logistic Regression}
+
+Define the logistic activation function that gives the probability that $x_i$ belongs to class $i$:
+
+\[
+    \hat{p_i} = \sigma(z_i) = \frac{1}{1 + e^{-(w^Tx_i + b)}}
+\]
+
+Then, minimize binary cross-entropy loss:
+\[
+    \ell(y_i,\hat{p_i})
+    =
+    -\sum_{i=1}^n
+    \left[
+    y_i\log(\hat{p}_i)
+    +
+    (1-y_i)\log(1-\hat{p}_i)
+    \right],
+    \qquad
+    \hat{p}_i = \sigma(w^T x_i+b).
+\]
+
+\begin{itemize}
+    \item Logistic regression, by converting $w^Tx_i+b$ to probabilities, reduces the contribution of high leverage points to the $w$, $b$.
+    \item As such, logistic regression is often preferred over linear classification with squared loss.
+\end{itemize}
+
+\textit{Quiz 3 content covers from last week to this Monday.}
+
+\end{document}
