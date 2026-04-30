@@ -1,3 +1,28 @@
+"""
+Topics Covered:
+
+Linear Regression:
+LinearRegressor(), fit
+
+Ridge Regression:
+Ridge(alpha), fit
+
+R^2:
+model.score(X,y)
+
+Normalization:
+scale = StandardScaler()
+X_norm = scale.fit_transform(X)
+
+Polynomial Matrix:
+scale = PolynomialFeatures(deg)
+X_poly = scale.fit_transform(X)
+
+Train-test-split:
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+"""
+
+
 import pandas as pd
 
 from ucimlrepo import fetch_ucirepo 
