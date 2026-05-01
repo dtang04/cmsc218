@@ -15,13 +15,14 @@
     \item Assumption that population follows $y = mX + \epsilon$
     \item Given $(X_i, y_i)_{i = 0}^n$, solve 
     \[
-        \hat{m} = \frac{Corr(X,y)}{Var(X)}
+        \hat{m} = \frac{Cov(X,y)}{Var(X)}
     \]
     \[
-        \hat{b} = E[\bar{y}] - mE[\bar{X}]
+        \hat{b} = E[y] - \hat{m}E[X]
     \]
+    \item For 1-D X, we estimate $E[y]$ with $\bar{y}$, and $E[X]$ with $\bar{X}$.
     \item Then, given new predictor $X_{new}$, can find $\hat{y}_{new}$, which is a prediction for $y_{new}$.
-    \item Expected rror:
+    \item Expected Error:
     \[
         E[(\hat{y_i} - y_i)^2] = E[((\hat{m}X_i + \hat{b}) - (mX_i + b + \epsilon))^2]
     \]
