@@ -1,0 +1,24 @@
+name: Python CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      MPLBACKEND: Agg
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+    - run: pip install -r requirements.txt
+    - run: |
+        python assignment2.py
+        python exercises1/practice.py
+        python exercises2/analysis.py
+        python exercises3/analysis_city.py
+        python ml_practice/chicago_accidents.py
+        python ml_practice/concrete.py
+        python ml_practice/election_markets.py
+        python ml_practice/sunspots.py
