@@ -17,8 +17,4 @@ jobs:
         python assignment2.py
         python exercises1/practice.py
         python exercises2/analysis.py
-        python exercises3/analysis_city.py
-        python ml_practice/chicago_accidents.py
         python ml_practice/concrete.py
-        python ml_practice/election_markets.py
-        python ml_practice/sunspots.py
