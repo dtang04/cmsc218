@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import TimeSeriesSplit
 
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge
 
 df = pd.read_csv("monthly-sunspots.csv")
 
@@ -24,6 +25,11 @@ X_train_n, X_test_n, y_train_n, y_test_n = train_test_split(X_new, y, random_sta
 
 def buildLinearRegressor(X_, y_):
     model = LinearRegression()
+    model.fit(X_, y_)
+    return model
+
+def buildRidgeRegressor(X_, y_, l = 5):
+    model = Ridge(alpha=l)
     model.fit(X_, y_)
     return model
 
@@ -48,12 +54,19 @@ def main():
         y_train_fold, y_test_fold = y.iloc[train_idx], y.iloc[test_idx]
 
         model_tscv = buildLinearRegressor(X_train_fold, y_train_fold)
+        model_ridge_tscv = buildRidgeRegressor(X_train_fold, y_train_fold)
+
         r2 = model_tscv.score(X_test_fold, y_test_fold)
+        r2_ridge = model_ridge_tscv.score(X_test_fold, y_test_fold)
 
         y_pred = model_tscv.predict(X_test_fold)
+        y_pred_ridge = model_ridge_tscv.predict(X_test_fold)
+    
         r = np.corrcoef(y_test_fold, y_pred)[0,1] #Returns [0,1]th element of correlation matrix
+        r_ridge = np.corrcoef(y_test_fold, y_pred_ridge)[0,1]
 
-        print(f"AR(1) Model fold = {fold}, R = {r}, R^2 = {r2}")
+        print(f"AR(1) Model OLS: fold = {fold}, R = {r}, R^2 = {r2}")
+        print(f"AR(1) Model Ridge: fold = {fold}, R = {r_ridge}, R^2 = {r2_ridge}")
 
         fold += 1
     
