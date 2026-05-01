@@ -132,6 +132,7 @@ Then the generalizatin gap is defined as $G = T_e - T_r$, where
 
 \begin{itemize}
     \item A more complex model will have higher generalization gap, as it will be more susceptible to overfitting to the training set (higher variance)
+    \item $G > T_r \implies \text{Test error} > \text{Train error} \implies \text{overfitting}$
 \end{itemize}
 
 From bias-variance-noise decomposition,
@@ -144,6 +145,7 @@ From bias-variance-noise decomposition,
     \item A more complex model will have lower bias, and higher variance.
     \item A less complex model will have higher bias, and lower variance.
     \item The optimal model will minimize total error: it will try to keep a low bias while also making sure that predictions don't vary too much when given a different sample (overfitting).
+    \item Adding regularizers trades off a small increase in bias for a large decrease in variance.
 \end{itemize}
 
 \section*{Auto Regression}
