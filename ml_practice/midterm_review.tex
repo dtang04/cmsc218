@@ -1,0 +1,150 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage[margin=1in]{geometry}
+
+\title{ML Midterm Review}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Linear Regression}
+
+\[
+Y = mX + b + \varepsilon
+\]
+
+\[
+E[Y] = mE[X] + b
+\]
+
+\[
+\text{Var}(Y) = m^2 \text{Var}(X) + \text{Var}(\varepsilon)
+\]
+
+\[
+\text{Signal to Noise Ratio (SNR)} = \frac{m^2 \text{Var}(X)}{\text{Var}(\varepsilon)}
+\]
+
+\[
+\rho = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X) \text{Var}(Y)}} = \pm \sqrt{\frac{1}{1 + \text{SNR}^{-1}}}
+\]
+
+\[
+\text{Cov}(X, Y) = \text{Cov}(X, mX + \varepsilon) = m \text{Cov}(X, X) + \text{Cov}(X, \varepsilon) = m \text{Var}(X)
+\]
+
+So,
+\[
+\boxed{\hat{m} = \frac{\text{Cov}(X, Y)}{\text{Var}(X)}}, \quad \hat{b} = E[Y] - \frac{\text{Cov}(X, Y)}{\text{Var}(X)} E[X] \iff \text{Solving } \hat{m}, \hat{b} = \frac{\partial}{\partial m, b} (y - mx)^2
+\]
+
+\[
+m = \frac{\text{Cov}(X, Y)}{\text{Var}(X)} = a \cdot \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X) \text{Var}(Y)}} \Rightarrow a = \sqrt{\frac{\text{Var}(Y)}{\text{Var}(X)}} \Rightarrow \hat{m} = \rho \cdot \frac{SD(Y)}{SD(X)}
+\]
+
+Then, if $X^* = \frac{X}{SD(X)}$, $Y^* = \frac{Y}{SD(Y)}$
+
+\[
+m^* = \frac{\text{Cov}(X^*, Y^*)}{\text{Var}(X^*)} = \frac{\frac{1}{\sqrt{\text{Var}(X) \text{Var}(Y)}} \text{Cov}(X, Y)}{\frac{1}{\text{Var}(X)} \text{Var}(X)} = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X) \text{Var}(Y)}} = \rho
+\]
+
+So, scaling $X$ by $\frac{1}{SD(X)}$, $Y$ by $\frac{1}{SD(Y)}$ can make $m^* = \rho$.
+
+\subsection*{Bias-Variance-Noise Decomposition of 1-D OLS}
+
+\[
+E[(y_i - \hat{y}_i)^2] = \text{Bias}(\hat{m})^2 + \text{Bias}(\hat{b})^2 + \text{Var}(\hat{m}) + \text{Var}(\hat{b}) + \text{Var}(\varepsilon)
+\]
+
+\section*{Multiple Linear Regression}
+
+In 1-D OLS,
+\begin{itemize}
+    \item $y = mx + b + \varepsilon$
+    \item $\hat{m} = \frac{\text{Cov}(X, Y)}{\text{Var}(X)} = \rho \cdot \frac{SD(Y)}{SD(X)}$
+\end{itemize}
+
+If $X^* = \frac{1}{\sqrt{SD(X)}}$, $Y^* = \frac{1}{\sqrt{SD(Y)}}$, then $\hat{m} = \rho$.
+
+For multiple linear regression:
+\[
+Y = X\beta + \varepsilon
+\]
+\[
+\underset{n \times 1}{Y} = \underset{n \times p}{X} \underset{p \times 1}{\beta} + \underset{n \times 1}{\varepsilon}
+\]
+
+\[
+\begin{bmatrix} y_1 \\ \vdots \\ y_n \end{bmatrix} = \begin{bmatrix} 1 & x_1^1 & \cdots & x_1^p \\ \vdots & & & \vdots \end{bmatrix} \begin{bmatrix} \beta_1 \\ \vdots \\ \beta_p \end{bmatrix} + \begin{bmatrix} \varepsilon_1 \\ \vdots \\ \varepsilon_n \end{bmatrix}
+\]
+
+\begin{itemize}
+    \item Now, $\beta \neq \text{Corr}(X_{i \in \{1, \ldots, p\}}, Y)$
+    \item Covariances between predictors $\text{Cov}(X_i, X_j) \neq 0$
+    \item Low $\beta_i \neq$ high Correlation
+\end{itemize}
+
+\[
+\hat{\beta} = \underset{\beta}{\text{argmin}} \|y - X\beta\|_2^2 \Rightarrow \hat{\beta} = (X^T X)^{-1} X^T y
+\]
+
+\[
+R^2 = 1 - \frac{SSE}{SST} = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y}_i)^2}
+\]
+
+\begin{itemize}
+    \item Measures how well our model does compared to the baseline model $\bar{y}$.
+\end{itemize}
+
+\section*{Ridge Regression}
+
+\begin{itemize}
+    \item Adds a L2-regularizer to smooth training
+    \item Can give a solution even if $X$ doesn't have linearly independent rows
+    \item Smoothing spreads out decision boundaries so one data point is not as influential $\Rightarrow$ balance between trusting/not trusting the data.
+\end{itemize}
+
+\[
+\min_{\beta} \|y - X\beta\|_2^2 + \alpha \|\beta\|_2^2
+\]
+
+\[
+\Rightarrow \hat{\beta} = (X^T X + \alpha I)^{-1} X^T y
+\]
+
+\section*{Auto Regression}
+
+\begin{itemize}
+    \item Use labels from $t-1$ to predict labels at $t$
+\end{itemize}
+
+AR(1) Model:
+\[
+\hat{y}_t = X\hat{\beta} + y_{t-1}\hat{\beta}_{t-1}
+\]
+
+\begin{itemize}
+    \item Longitudinal Model (L) -- use $y_{t-1}, y_{t-2}, \ldots$ to predict $y_t$
+    \item Cross-sectional Model (C) -- use predictors $X_1, \ldots, X_p$ to predict $y_t$
+\end{itemize}
+
+\section*{Inductive vs. Transductive Models}
+
+\textbf{Inductive:}
+\begin{itemize}
+    \item Given $(X, y)$ output model $f(\cdot)$
+    \item Tries to learn a global rule from training data, and apply it to test data
+    \item Generalizable
+\end{itemize}
+
+\textbf{Transductive:}
+\begin{itemize}
+    \item Learn specific patterns about this particular set of unlabeled data
+    \item Look for specific patterns in this dataset only, use training data as guide
+    \item E.g. Data structure that organizes the $X, y$ pairs
+    \item To find $y_{\text{pred}}$ given $X_{\text{new}}$, query into the data structure and use the closest $(X, y)$ pair.
+\end{itemize}
+
+\end{document}
