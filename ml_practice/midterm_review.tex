@@ -52,6 +52,13 @@ m^* = \frac{\text{Cov}(X^*, Y^*)}{\text{Var}(X^*)} = \frac{\frac{1}{\sqrt{\text{
 
 So, scaling $X$ by $\frac{1}{SD(X)}$, $Y$ by $\frac{1}{SD(Y)}$ can make $m^* = \rho$.
 
+\subsection*{Distinction between $Cov(X,Y)$ and $\rho$}
+\begin{itemize}
+    \item $Cov(X,Y)$ - determines the direction of the relationship, but magnitude depends on units
+    \item $\rho = Corr(X,Y)$ - determines strength and direction of relationship, unit-agnostic
+    \item Both $Cov(X,Y)$ and $\rho$ stay the same if $X$ became the dependent variable and $y$ became the explanatory variable
+\end{itemize}
+
 \subsection*{Bias-Variance-Noise Decomposition of 1-D OLS}
 
 \[
