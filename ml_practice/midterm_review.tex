@@ -123,6 +123,29 @@ R^2 = 1 - \frac{SSE}{SST} = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - 
 \Rightarrow \hat{\beta} = (X^T X + \alpha I)^{-1} X^T y
 \]
 
+\section*{Generalization}
+Let $T_e$ be the expected test error, $T_r$ be the expected training error.
+Then the generalizatin gap is defined as $G = T_e - T_r$, where 
+\[
+    \underbrace{(T_e - T_r)}_G + T_r = T_e
+\]
+
+\begin{itemize}
+    \item A more complex model will have higher generalization gap, as it will be more susceptible to overfitting to the training set (higher v)
+\end{itemize}
+
+From bias-variance-noise decomposition,
+
+\[
+    \underbrace{E[(y - \hat{y})^2]}_{\text{Total Error}} = \underbrace{(E[\hat{y}] - y)^2}_{\text{Bias}} + \underbrace{Var(\hat{y})}_{\text{Variance}} + \underbrace{\text{Var}(\varepsilon)}_{\text{Noise}}
+\]
+
+\begin{itemize}
+    \item A more complex model will have lower bias, and higher variance.
+    \item A less complex model will have higher bias, and lower variance.
+    \item The optimal model will minimize total error: it will try to keep a low bias while also making sure that predictions don't vary too much when given a different sample (overfitting).
+\end{itemize}
+
 \section*{Auto Regression}
 
 \begin{itemize}
