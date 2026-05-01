@@ -1,5 +1,5 @@
 """
-Building a model to predict number of candidate votes.
+Building several models to predict number of candidate votes.
 """
 
 import pandas as pd
