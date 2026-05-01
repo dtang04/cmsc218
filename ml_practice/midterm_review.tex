@@ -37,7 +37,7 @@ E[Y] = mE[X] + b
 
 So,
 \[
-\boxed{\hat{m} = \frac{\text{Cov}(X, Y)}{\text{Var}(X)}}, \quad \hat{b} = E[Y] - \frac{\text{Cov}(X, Y)}{\text{Var}(X)} E[X] \iff \text{Solving } \hat{m}, \hat{b} = \frac{\partial}{\partial m, b} (y - mx)^2
+\boxed{\hat{m} = \frac{\text{Cov}(X, Y)}{\text{Var}(X)}}, \quad \hat{b} = E[Y] - \frac{\text{Cov}(X, Y)}{\text{Var}(X)} E[X] \iff \text{Solving } \hat{m}, \hat{b} = \arg\min_{m, b} (y - mx - b)^2
 \]
 
 \[
