@@ -1,0 +1,51 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{lec51}
+\author{Dylan Tang}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Classification - Precision and Recall}
+Recall: 
+\begin{itemize}
+    \item Given $(X,Y)_{i=1}^n$, classify new point $y_i \in \mathcal{L}$ given $x_i$, where $\mathcal{L}$ is the class of labels
+    \item Since labels are discrete, evaluate with confusion matrix rather than $R^2$
+\end{itemize}
+\textbf{Confusion Matrix}
+\[
+    \begin{array}{c|ccc}
+     & \text{Predicted } a & \text{Predicted } b & \text{Predicted } c \\
+    \hline
+    \text{Actual } a & n_{aa} & n_{ab} & n_{ac} \\
+    \text{Actual } b & n_{ba} & n_{bb} & n_{bc} \\
+    \text{Actual } c & n_{ca} & n_{cb} & n_{cc}
+    \end{array}
+\]
+\begin{itemize}
+    \item \textbf{Precision}:
+    \[
+        \text{Precision}_{\ell \in \mathcal{L}} = \frac{\text{\# of True Positives}}{\text{\# of Predicted Positives}} = \frac{TP}{TP + FP}
+    \]
+    \item Ex. Precision for class c is $\frac{n_{cc}}{n_{ac} + n_{bc} + n_{cc}}$
+    \item \textbf{Recall}:
+    \[
+        \text{Recall}_{\ell \in \mathcal{L}} = \frac{\text{\# of True Positives}}{\text{\# of  Actual Positives}} = \frac{TP}{TP + FN}
+    \]
+    \item Ex. Recall for class c is $\frac{n_{cc}}{n_{ca} + n_{cb} + n_{cc}}$
+\end{itemize}
+
+\begin{verbatim}
+    from sklearn.model_selection import train_test_split
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import precision_score
+    X_train, y_train, X_test, y_test = train_test_split(X, y)
+    model = LogisticRegression()
+    model.fit(X_train, Y_train)
+    y_pred = model.predict(X_test)
+    precision_score(y_test, y_pred)   
+\end{verbatim}
+\end{document}
