@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{lec54}
+\author{Dylan Tang}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Comparing Random Variables}
+\begin{itemize}
+    \item Given $x_i$, $x_j$ drawn from the same population $X$, how different will they be?
+    \[
+        E[(x_i - x_j)^2] = E[x_i^2 - 2x_ix_j + x_j^2] = E[x_i^2] + E[x_j^2] - 2E[x_ix_j]
+    \]
+    Assuming $x_i, x_j \sim X$,
+    \[
+     E[x_i^2] + E[x_j^2] - 2E[x_ix_j] = E[x_i^2] + E[x_j^2] - 2E[x_i]E[x_j]
+    \]
+    \[
+        (E[x_i^2] - E[x_i]^2) + (E[x_j^2] - E[x_j]^2) = 2Var(X)
+    \]
+\end{itemize}
+
+Let $T$ be the treatment variable, $C$ be the control variable.
+Then
+\[
+    E[T] = \mu_T, Var(T) = \sigma_T^2
+\]
+\[
+    E[C] = \mu_c, Var(C) = \sigma_C^2
+\]
+
+Then, let $\Delta = \mu_T - \mu_C$, $\tau = \sigma_T^2 + \sigma_C^2$
+
+\begin{itemize}
+    \item $\Delta$ is the population effect size
+    \item $\tau$ is the population total variance
+\end{itemize}
+
+\section{Two Sample Z-Test}
+The two-sample Z-test between observations $T = t$, $C = c$, assuming $T \perp C$, is:
+\[
+    z = \frac{(t - c) - 0}{\tau}
+\]
+under 
+
+$H_0$: There is no difference between populations $T$ and $C$. \\
+
+$H_A$: There is a difference between populations $T$ and $C$.
+\begin{itemize}
+    \item We try to estimate the population effect size $\Delta$ with the observed difference $t - c$
+    \begin{itemize}
+        \item $E[t - c] = \mu_T - \mu_C = \Delta$
+    \end{itemize}
+    \item We typically will substitute the population total variance with the standard errors of each population $SE = SE_T + SE_C$
+\end{itemize}
+\subsection{Two Sample Z-Test for Sample Means}
+Given $T$, $C$, our sample statistics are $\bar{X}_T, \bar{X}_C$.
+\\
+\\
+Then $\sigma_{\bar{X}_T} = \frac{\sigma_T}{\sqrt {n_T}}$, $\sigma_{\bar{X}_C} = \frac{\sigma_C}{\sqrt {n_C}}$
+\\
+\\
+Our hypotheses is the following:
+\\
+\\
+$H_0$: There is no difference between populations $T$ and $C$. 
+\\
+\\
+$H_A$: There is a difference between populations $T$ and $C$.
+\\
+\\
+Then,
+\[
+    z^* = \frac{(\bar{X}_T - \bar{X}_C) - 0}{\frac{\sigma_T}{\sqrt {n_T}} + \frac{\sigma_C}{\sqrt {n_C}}}
+\]
+If $2 \cdot P(z \geq z^*) < \alpha$, reject $H_0$ at the $\alpha$ significance level.
+\begin{itemize}
+    \item \textbf{Assumption 1}: $E[\bar{X}_T] = \mu_T$, $E[\bar{X}_C] = \mu_C$
+    \item \textbf{Assumption 2}: $\bar{X}_T \perp \bar{X}_C$
+    \item The P-value ($P$) is called the \textbf{false discovery rate}.
+    \begin{itemize}
+        \item Under $H_0$, the probability of getting a difference in test statistics as or more extreme as the one observed in $\bar{X}_T - \bar{X}_C$ is $P$
+    \end{itemize}
+\end{itemize}
+\end{document}
