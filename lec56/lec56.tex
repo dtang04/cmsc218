@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{lec56}
+\author{Dylan Tang}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Review of the Two Sample Z-Test}
+Given $T$, $C$, our sample statistics are $\bar{X}_T = \frac{1}{m}\sum_{i=1}^nX_i^{(T)}, \bar{X}_C = \frac{1}{n}\sum_{i=1}^nX_i^{(C)}$.
+\\
+\\
+Then $\sigma_{\bar{X}_T} = \frac{\sigma_T}{\sqrt {n_T}}$, $\sigma_{\bar{X}_C} = \frac{\sigma_C}{\sqrt {n_C}}$
+\\
+\\
+Then,
+\[
+    z^* = \frac{(\bar{X}_T - \bar{X}_C) - 0}{\frac{\sigma_T}{\sqrt {n_T}} + \frac{\sigma_C}{\sqrt {n_C}}}
+\]
+If $2 \cdot P(z \geq z^*) < \alpha$ (two-sided P-value), reject $H_0$ at the $\alpha$ significance level.
+\begin{itemize}
+    \item $E[\bar{X}_T] = \mu_T$, $E[\bar{X}_C] = \mu_C$
+    \item $\{X_1^{(T)} \perp X_2^{(T)} \perp \dots \perp X_m^{(T)}\} \perp \{X_1^{(C)} \perp X_2^{(C)} \perp \dots \perp X_n^{(C)}\}$
+    \item $\bar{X}_T - \bar{X}_C$ is called the test statistic
+    \item The P-value ($P$) is called the \textbf{false discovery rate}.
+    \begin{itemize}
+        \item Under $H_0$, the probability of getting a difference in test statistics as or more extreme as the one observed in $\bar{X}_T - \bar{X}_C$ is $P$
+    \end{itemize}
+    \item Note that if we use $SE_T$ and $SE_C$ rather than the population standard deviations, the test statistic follows Student's $t$ rather than Normal. However, this idea is abstracted since at large enough $n_T$, $n_c$, $t$ is roughly identical to $z$.
+\end{itemize}
+\section{Bayes Rule for RVs}
+Recall the properties of conditional probability:
+\begin{itemize}
+    \item $P(A = a \, \cap \, B = b ) = P(A = a|B = b)P(B = b)$
+\newpage
+\textbf{Bayes Rule:}
+\end{itemize}
+\[
+    P(B=b|A=a) = \frac{P(A=a|B=b)\cdot P(B=b)}{P(A=a)} = \frac{P(A=a|B=b)P(B=b)}{\sum_{k \in \mathcal{B}}P(A=a|B=k)P(B=k)}
+\]
+
+Let $\Delta = \bar{X}_T - \bar{X}_C$
+
+Then,
+\[
+    P(H_0 | \Delta) =  \frac{P(\Delta|H_0) P(H_0)}{P(\Delta)} = KP(\Delta|H_0) P(H_0)
+\]
+\[
+    P(H_A | \Delta) =  \frac{P(\Delta|H_A) P(H_A)}{P(\Delta)} = KP(\Delta|H_A) P(H_A)
+\] where $K = \frac{1}{P(\Delta)}$.
+\\
+\\
+Note that $P(H_0|\Delta)$ is the probability of interest: given we observe the test statistic $\Delta$, what is the probability that $H_0$ is true?
+\\
+\\
+Then, setting priors $P(H_0) = \theta, P(H_A) = 1 - \theta$, we have
+\\
+\[
+    P(H_0 | \Delta) = KP(\Delta|H_0)\theta
+\]
+\[
+    P(H_A | \Delta) =  \frac{P(\Delta|H_A) P(H_A)}{P(\Delta)} = KP(\Delta|H_A)(1-\theta)
+\]
+Then, $P(\Delta|H_0)$ is (informally) the P-value. To go from the P-value to $P(H_0|\Delta)$, we would need prior $\theta$ and $K = \frac{1}{P(\Delta)}$. This also shows that:
+\[
+    \text{P-value} = P(\Delta|H_0) \neq P(H_0|\Delta)
+\]
+\\
+\\
+Properties:
+\begin{itemize}
+    \item $H_A =(H_0)^C$ - $H_A$ is the complement of $H_0$
+    \begin{itemize}
+        \item So, $P(H_0|\Delta) = 1 - P(H_A|\Delta)$
+    \end{itemize}
+    \item \textbf{P-value - Frequentist}: Under $H_0$, the probability of observing a test statistic as or more extreme than the one observed is $P$.
+\end{itemize}
+\end{document}
