@@ -1,0 +1,84 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{lec58}
+\author{Dylan Tang}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Review of 2-Sample Hypothesis Test, Efficiency, Robustness}
+\begin{itemize}
+    \item Recall that given $\bar{X}_C$ and $\bar{X}_T$, the two-sample test for no difference in means is given by
+\[
+    z = \frac{(\bar{X}_T - \bar{X}_C) - 0}{\frac{\sigma_T}{\sqrt{n_T}} + \frac{\sigma_C}{\sqrt{n_C}}}
+\]
+Then, we compare
+\[
+    2 \cdot P(Z > z) < \alpha
+\]
+\item \textbf{Efficiency} trusts the data, and tries to use as much data that the original setup provides as possible to reach a conclusion.
+\item \textbf{Robustness} protects against bad assumptions, noise, or inaccurate data.
+\end{itemize}
+
+\section{Efficiency and Robustness with Regularizers}
+\subsection{Ridge Regression}
+Consider the objective of ridge regression:
+\[
+    \arg\min_w \sum_{i=1}^n|y-w^Tx|^2_2 + \lambda |w|^2_2
+\]
+This is equivalent to putting a \textbf{Gaussian prior} on the weights, and assuming 
+\[
+    w \sim N(0, \frac{1}{\lambda}I)
+\]
+which results in the optimal
+\[
+    \hat{w} = (X^TX + \lambda I)^{-1}X^Ty
+\]
+Ridge regression penalizes large $w_i$s with higher loss.
+\begin{itemize}
+    \item Therefore, a larger $\lambda$ means that we trust the prior more, and thus shrink $w_i$s to 0 $\implies$ robustness
+    \item Conversely, a smaller $\lambda$ means that we trust the prior less, and thus allow for greater $w_i$s $\implies$ efficiency
+\end{itemize}
+\subsection{LASSO Regression}
+\begin{itemize}
+    \item LASSO regression also introduces penalties for large weights.
+    \item However, rather than shrinking weights, LASSO regression pushes coefficients exactly to 0, and thus keeps contributions only from important weights.
+\end{itemize}
+The objective of LASSO regression is the following:
+\[
+    \arg\min_w \sum_{i=1}^n|y-w^Tx|^2_2 + \lambda |w|_1
+\]
+where
+\[
+    |w|_1 = \sum_{i=1}^k w_i
+\]
+The same concepts of efficiency and regularization also pertain here. A larger lambda means we trust LASSO prior more, and shrink more coefficients to 0. A smaller lambda means that we trust the LASSO prior less, and keep more coefficients.
+
+\section{Distributional Robustness}
+\begin{itemize}
+    \item Recall that a regression model is given by 
+    \[
+        \hat{y} = \hat{m}X + \epsilon
+    \]
+    \item However, what if there is a small subset of data that are adversarial to our model, i.e. they lead our data to be inaccurate.
+    \item Solution 1: Acquire more data to increase robustness
+    \item Solution 2: Reduce the influence of one corrupted data point by converting to percentiles or ranks
+        \begin{itemize}
+            \item Reduces efficiency but increases robustness
+        \end{itemize}
+\end{itemize}
+
+\newpage
+\section{Three Types of  Priors}
+\begin{itemize}
+    \item \textbf{Smoothing prior} - Assume that $w_i$s are close to 0 - use regularization
+    \item \textbf{Corruption prior} - Assume that some data points are corrupted or extreme, and can thus affect the final accuracy of our predictions - convert to percentiles, ranks
+    \item \textbf{Low-Rank prior} - Assume that the actual variation only occurs in a small subset of the original predictors - use dimensionality reduction methods such as PCA
+    \begin{itemize}
+        \item In PCA, each principal component ($PC_i$) captures the $i$th direction with the most variance in the dataset.
+    \end{itemize}
+\end{itemize}
+\end{document}
