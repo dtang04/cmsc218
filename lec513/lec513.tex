@@ -1,0 +1,202 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{lec513}
+\author{Dylan Tang}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Review of GD and Backpropagation}
+\subsubsection{Gradient Descent}
+Gradient descent is given by:
+\[
+    W^{(t+1)}
+    =
+    W^{(t)}
+    -
+    \eta \nabla_{W}\mathcal{L}\left(W^{(t)}\right)
+\]
+\subsubsection{Backward Propogation}
+\begin{itemize}
+\item For a hidden layer $\ell$, recall that
+\[
+    Z^{(\ell)} = W^{(\ell)}A^{(\ell - 1)} + b^{(\ell)},
+    \qquad
+    A^{(\ell)} = \sigma\left(Z^{(\ell)}\right).
+\]
+\end{itemize}
+Using the chain rule, the gradient with respect to $W^{(\ell)}$ is
+\[
+    \frac{\partial \mathcal{L}}{\partial W^{(\ell)}}
+    =
+    \frac{\partial \mathcal{L}}{\partial A^{(\ell)}}
+    \frac{\partial A^{(\ell)}}{\partial Z^{(\ell)}}
+    \frac{\partial Z^{(\ell)}}{\partial W^{(\ell)}}.
+\]
+Then, 
+\[
+    \frac{\partial A^{(\ell)}}{\partial Z^{(\ell)}} = \sigma'(Z^{(\ell)})
+\]
+and
+\[
+    \frac{\partial{Z}^{(\ell)}}{\partial W^{(\ell)}} = (A^{(\ell-1)})^T
+\]
+which gives
+\[
+    \boxed{
+    \frac{\partial \mathcal{L}}{\partial W^{(\ell)}}
+    =
+    \left[
+    \frac{\partial \mathcal{L}}{\partial A^{(\ell)}}
+    \odot
+    \sigma'\left(Z^{(\ell)}\right)
+    \right]
+    \left(A^{(\ell - 1)}\right)^T
+    }
+\]
+Note that
+\[
+    \mathcal{L} = f(Y, \hat{Y}) = f(Y, \sigma(W^{(L)}A^{(L-1)})+b^{(L)}) = f(Y, \sigma(W^{(L)}\sigma(W^{(L-1)}A^{(L-2)})+b^{(L-1)})+b^{(L)}) = \dots
+\]
+\section{Convolution}
+\[
+    X = [a,b,c,d,e],
+    \qquad
+    Y = [-1,1]
+\]
+
+\begin{itemize}
+    \item Think of \(X\) as the input signal.
+    \item Think of \(Y\) as the filter/kernel.
+    \item We slide \(Y\) across \(X\), computing the dot product at each slide.
+\end{itemize}
+
+\[
+\begin{array}{c|ccccc}
+X & a & b & c & d & e \\
+\hline
+Y & -1 & 1 &   &   &
+\end{array}
+\]
+
+\[
+    (-1)a + (1)b = -a + b
+\]
+
+\[
+\begin{array}{c|ccccc}
+X & a & b & c & d & e \\
+\hline
+Y &   & -1 & 1 &   &
+\end{array}
+\]
+
+\[
+    (-1)b + (1)c = -b + c
+\]
+
+\[
+\begin{array}{c|ccccc}
+X & a & b & c & d & e \\
+\hline
+Y &   &   & -1 & 1 &
+\end{array}
+\]
+
+\[
+    (-1)c + (1)d = -c + d
+\]
+
+\[
+\begin{array}{c|ccccc}
+X & a & b & c & d & e \\
+\hline
+Y &   &   &   & -1 & 1
+\end{array}
+\]
+
+\[
+    (-1)d + (1)e = -d + e
+\]
+
+\[
+    X * Y
+    =
+    [-a+b,\,-b+c,\,-c+d,\,-d+e]
+\]
+
+\begin{itemize}
+    \item Convolution length is $n - k + 1$, where $len(X) = 5$, $len(Y) = 2$
+    \item This filter computes local differences between neighboring entries.
+\end{itemize}
+Consider the following image:
+\[
+X= 
+\begin{bmatrix}
+    0 & 0 & 0 & 0 \\
+    0 & 1 & 1 & 0 \\
+    0 & 1 & 1 & 0 \\
+    0 & 0 & 0 & 0
+\end{bmatrix}
+\]
+and had the filter 
+\[
+    Y = \begin{bmatrix}
+        1 & -1 \\
+        -1 & 1
+    \end{bmatrix}
+\]
+Then, 
+\[
+    X*Y = \begin{bmatrix}
+        1 & 0 & -1 \\
+        0 & 0 & 0 \\
+        -1 & 0 & 1
+    \end{bmatrix}
+\]
+For the example above,
+\begin{itemize}
+    \item $1$ means the filter found a matching pattern
+    \item $-1$ means the filter found an opposite pattern
+    \item $0$ means the filter did not match in either direction
+\end{itemize}
+
+A CNN learns the combination of filters at each hidden layer that results in the best prediction.
+
+Consider
+\[
+    X = \begin{bmatrix}
+        a & b & c & d & e
+    \end{bmatrix}
+\]
+Then, let
+\[
+    m_1 = \begin{bmatrix}
+        m_{11} & m_{12}
+    \end{bmatrix}
+\]
+and
+\[
+    m_2 = \begin{bmatrix}
+            m_{21} & m_{22}
+        \end{bmatrix}
+\]
+Then, 
+\[
+    X * m_1 * m_2
+    =
+    \begin{bmatrix}
+    (am_{11}+bm_{12})m_{21} + (bm_{11}+cm_{12})m_{22} \\[0.5em]
+    (bm_{11}+cm_{12})m_{21} + (cm_{11}+dm_{12})m_{22} \\[0.5em]
+    (cm_{11}+dm_{12})m_{21} + (dm_{11}+em_{12})m_{22}
+    \end{bmatrix}.
+\]
+\begin{itemize}
+    \item Each element in the final series of convolutions contains elements in $X, m_1, m_2 \implies$ convolution gives each element information about the entire network 
+    \item So, convolution is a very fast way to diseeminate information to all nodes of a layer
+    \item Cascades of convolutions are called a \textbf{receptive field}. The end result contains information of all parts of the cascade.
+\end{itemize}
+\end{document}
