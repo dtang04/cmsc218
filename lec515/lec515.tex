@@ -1,0 +1,74 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\title{lec15}
+\author{Dylan Tang}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Convolution}
+\begin{itemize}
+    \item Convolution is a type of information bottleneck
+    \item Ex. Given $x_i = [0, 0.1, 0.2, 1.4, 1.5, 0.1, 0.2]$, we want the model to notice the sudden spike from $0.2 \rightarrow 1.4$
+    \item Can apply convolution filter $f_1 = [-1, 1, 1, -1]$, calculate $F = f_1 * x_i, \forall i$
+        \begin{itemize}
+            \item $f_1$ measures how $x_k, x_{k+1}$ differ from $x_{k-1}, x_{k+2}$
+        \end{itemize}
+    \item Then, take the sum of $x_i$'s elements with $f_2 = [1,1,1,1,1,1]$
+\end{itemize}
+
+However, convolution only works if we impose a fixed size sliding window $f$, typically smaller than the original $x_I$.
+
+\section{Attention}
+
+\begin{itemize}
+    \item Let $x_i \in \mathbb{R}^d$ be an input vector, and let $q \in \mathbb{R}^d$ be an attention filter of the same dimension.
+    
+    \item Each component $q_j$ controls how much attention is placed on the corresponding component $x_{ij}$ of $x_i$:
+    \[
+        x_i \odot q =
+        \begin{bmatrix}
+            x_{i1}q_1 \\
+            x_{i2}q_2 \\
+            \vdots \\
+            x_{id}q_d
+        \end{bmatrix} \in \mathbb{R}^d
+    \]
+    
+    \item A larger value of $q_j$ means that the model places more weight on the $j$-th feature of $x_i$.
+\end{itemize}
+\section{Large Language Models}
+\begin{itemize}
+    \item Given input $C$, an LLM predicts the next word $w$ based on finding the posterior distribution $P(w|C)$.
+    \item A LLM is trained on large amounts of data to predict the posterior
+    \item Each word is assigned a unique ID, called a token $t$
+    \item Then, this reduces to a signal processing problem - given a sequence of tokens $t_1 \dots t_k$, predict $t_{k+1}$.
+\end{itemize}
+Then, the training data for the next-word predictor takes on the following form:
+\[
+    x_1 = [t_1 \dots t_k], y_1 = t_{k+1}
+\]
+
+We can then recursively run this: \\
+\\
+First pass:
+\[
+    x_1 = [t_1 \dots t_k] \rightarrow \text{Predict } t_{k+1}
+\]
+Second pass:
+\[
+    x_2 = [t_1, \dots, t_k, t_{k+1}] \rightarrow \text{Predict } t_{k+2}
+\]
+and so on.
+
+\begin{itemize}
+    \item Typically, training LLM take on the following form:
+    \item \textbf{Foundational Model Training} - learn posterior from entire Internet
+    \item \textbf{Mid-Training} - refine posterior on questions asked on the Internet - identifying a smaller subset of human data that looks like a conversation
+    \item \textbf{Post-Training} - using real people to interact with the model, and finetune the model with sophisticated conversations
+\end{itemize}
+\end{document}
