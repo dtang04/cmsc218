@@ -112,7 +112,7 @@ Recall that the recurrence relation is  \[
 \textbf{Remarks}
 \begin{itemize}
     \item Gradient descent requires optimizing for each weight connecting nodes from $\ell$ to $\ell + 1$ - expensive
-    \item It is important to standardize $X_1 \dots X_N$ to prevent exploding/vanishing gradients
+    \item It is important to standardize $X_1 \dots X_N$ to prevent exploding/vanishing gradients $\texttt{scale = StandardScaler(); norm\_X = scale.fit\_transform(X)}$
 \end{itemize}
 \subsubsection{Code Snippets}
 \textbf{Standard Regression using Neural Nets}
