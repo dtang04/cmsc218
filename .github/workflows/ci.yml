@@ -18,7 +18,7 @@ jobs:
         python exercises1/practice.py
         python exercises2/analysis.py
         python ml_practice/concrete.py
-        python ml_practice_2/practice.py
+        cd ml_practice_2 && python practice.py
 
   latex:
     runs-on: ubuntu-latest
