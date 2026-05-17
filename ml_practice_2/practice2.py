@@ -12,8 +12,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
-from sklearn.preprocessing import StandardScaler
-
 from sklearn.metrics import confusion_matrix
 
 
