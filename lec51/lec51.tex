@@ -14,6 +14,10 @@ Recall:
 \begin{itemize}
     \item Given $(X,Y)_{i=1}^n$, classify new point $y_i \in \mathcal{L}$ given $x_i$, where $\mathcal{L}$ is the class of labels
     \item Since labels are discrete, evaluate with confusion matrix rather than $R^2$
+    \item Accuracy: 
+    \[
+        \text{Accuracy} = \frac{TP + TN}{TP + FP + FN + TN}
+    \]
 \end{itemize}
 \textbf{Confusion Matrix}
 \[
@@ -36,6 +40,13 @@ Recall:
         \text{Recall}_{\ell \in \mathcal{L}} = \frac{\text{\# of True Positives}}{\text{\# of  Actual Positives}} = \frac{TP}{TP + FN}
     \]
     \item Ex. Recall for class c is $\frac{n_{cc}}{n_{ca} + n_{cb} + n_{cc}}$
+\end{itemize}
+
+\textbf{Remarks:}
+\begin{itemize}
+    \item Precision and recall are used to mitigate class imbalance. 
+    \item Precision asks for the accuracy rate of positive classifications, so it is used when false positives are costly (e.g. spam email filter flagging an email as spam, when it isn't)
+    \item Recall asks for the detection rate of positive cases. It is used when false negatives are costly (e.g. cancer diagnosis)
 \end{itemize}
 
 \begin{verbatim}
