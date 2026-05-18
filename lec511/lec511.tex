@@ -109,7 +109,12 @@ Recall that the recurrence relation is  \[
     A^{(\ell+1)}
     =
     \sigma\left(W^{(\ell+1)}A^{(\ell)} + b^{(\ell+1)}\right)
-\] so we could find $ \frac{\partial \mathcal{L}}{\partial A^{(\ell)}}$ by repeatedly  unwrapping the recurrence relation, then taking the derivative.
+\] so we could find $ \frac{\partial \mathcal{L}}{\partial A^{(\ell)}}$ by repeatedly unwrapping the recurrence relation starting from the loss function, then taking the derivative.
+
+
+\begin{itemize}
+    \item One forward + backward pass is called an \textbf{epoch}.
+\end{itemize}
 
 \textbf{Remarks}
 \begin{itemize}
