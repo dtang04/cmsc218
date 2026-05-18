@@ -11,9 +11,11 @@ from sklearn.linear_model import LogisticRegression
 
 from sklearn.decomposition import PCA
 
-from sklearn.metrics import r2_score, accuracy_score
+from sklearn.metrics import r2_score, accuracy_score, confusion_matrix, recall_score, precision_score
 
 import tensorflow as tf
+
+np.random.seed(42)
 
 def main():
     df = pd.read_csv("Airline_Delay_Cause.csv").dropna()
@@ -47,20 +49,28 @@ def main():
     
     model = tf.keras.models.Sequential()
     model.add(tf.keras.layers.InputLayer(input_shape=(X.shape[1],)))
-    model.add(tf.keras.layers.Dense(32)) # regression, no activation func
-    model.add(tf.keras.layers.Dense(16))
-    model.add(tf.keras.layers.Dense(1))
+    model.add(tf.keras.layers.Dense(64, activation="relu"))
+    model.add(tf.keras.layers.Dense(32, activation="relu"))
+    model.add(tf.keras.layers.Dense(16, activation="relu"))
+    model.add(tf.keras.layers.Dense(1, activation="sigmoid"))
 
-    model.compile(optimizer="adam", loss="mse", metrics=["mae"])
+    #model.compile(optimizer="adam", loss="mse", metrics=["mae"])
+    model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 
-    model.fit(X_train, y_train)
+    model.fit(X_train, y_train, class_weight={0: 35, 1: 1})
 
-    loss = model.evaluate(X_test, y_test)
+    loss, acc = model.evaluate(X_test, y_test)
 
-    y_pred = model.predict(X_test)
+    y_hat = model.predict(X_test)
 
-    print("R^2: ", r2_score(y_test, y_pred))
-    print("Loss: ", loss)
+    y_hat = (y_hat > 0.5).astype(int).flatten() # make y_hat discrete [0,1], deal with class imbalance by labelling 1 only with very high probability (> 0.7)
+
+    print(confusion_matrix(y_test, y_hat))
+    print("Precision: ", precision_score(y_test, y_hat))
+    print("Recall: ", recall_score(y_test, y_hat))
+
+    # High Precision - Of all the delays predicted positive, >99% were indeed true positives
+    # Low Recall - Of all the delays in the dataset, only ~70% were caught by our classifier
 
 if __name__ == "__main__":
     main()
