@@ -111,14 +111,10 @@ Recall that the recurrence relation is  \[
     \sigma\left(W^{(\ell+1)}A^{(\ell)} + b^{(\ell+1)}\right)
 \] so we could find $ \frac{\partial \mathcal{L}}{\partial A^{(\ell)}}$ by repeatedly unwrapping the recurrence relation starting from the loss function, then taking the derivative.
 
-
-\begin{itemize}
-    \item One forward + backward pass is called an \textbf{epoch}.
-\end{itemize}
-
 \textbf{Remarks}
 \begin{itemize}
-    \item Gradient descent requires optimizing for each weight connecting nodes from $\ell$ to $\ell + 1$ - expensive
+    \item One forward + backward pass is called an \textbf{epoch}.
+    \item Gradient descent requires optimizing for each weight connecting nodes from $\ell$ to $\ell + 1$ - can be expensive for large networks
     \item It is important to standardize $X_1 \dots X_N$ to prevent exploding/vanishing gradients $\texttt{scale = StandardScaler(); norm\_X = scale.fit\_transform(X)}$
 \end{itemize}
 \subsubsection{Code Snippets}
@@ -178,7 +174,7 @@ import tensorflow as tf
 
 model = tf.keras.models.Sequential()
 
-# Input image: 28 x 28 grayscale image
+# Input image: 28 x 28 grayscale image (1 channel)
 model.add(tf.keras.layers.InputLayer(input_shape=(28, 28, 1)))
 
 # First convolution block
@@ -193,7 +189,7 @@ model.add(tf.keras.layers.Conv2D(
 # Pooling layer
 model.add(tf.keras.layers.MaxPooling2D(
     pool_size=(2, 2),
-    strides=(2, 2)
+    strides=(2, 2) # strides measure how far in x and y directions the convolution filter moves per iteration
 ))
 
 # Second convolution block
@@ -228,7 +224,7 @@ model.add(tf.keras.layers.Dense(
 
 model.compile(
     optimizer=tf.keras.optimizers.Adam(),
-    loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+    loss=tf.keras.losses.SparseCategoricalCrossentropy(), # multiclass regression with cross-entropy loss
     metrics=['accuracy']
 )
 
