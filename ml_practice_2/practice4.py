@@ -11,7 +11,7 @@ from sklearn.linear_model import LogisticRegression
 
 from sklearn.decomposition import PCA
 
-from sklearn.metrics import r2_score, accuracy_score, confusion_matrix, recall_score, precision_score
+from sklearn.metrics import r2_score, accuracy_score, confusion_matrix, classification_report
 
 import tensorflow as tf
 
@@ -44,6 +44,7 @@ def main():
     log_model.fit(X_train, y_train)
     y_hat = log_model.predict(X_test)
     print("Accuracy: ", accuracy_score(y_test, y_hat))
+    print(classification_report(y_test, y_hat))
 
     # ----Neural Network----
     
@@ -57,17 +58,17 @@ def main():
     #model.compile(optimizer="adam", loss="mse", metrics=["mae"])
     model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 
-    model.fit(X_train, y_train, class_weight={0: 35, 1: 1})
+    model.fit(X_train, y_train, class_weight={0: 50, 1: 1}) # Account for class imbalance by penalizing incorrect classifications of 0 much more
 
     loss, acc = model.evaluate(X_test, y_test)
 
     y_hat = model.predict(X_test)
 
-    y_hat = (y_hat > 0.5).astype(int).flatten() # make y_hat discrete [0,1], deal with class imbalance by labelling 1 only with very high probability (> 0.7)
+    y_hat = (y_hat > 0.8).astype(int).flatten() # Only classify more confident predictions as 1
 
     print(confusion_matrix(y_test, y_hat))
-    print("Precision: ", precision_score(y_test, y_hat))
-    print("Recall: ", recall_score(y_test, y_hat))
+    print(classification_report(y_test, y_hat))
+
 
     # High Precision - Of all the delays predicted positive, >99% were indeed true positives
     # Low Recall - Of all the delays in the dataset, only ~70% were caught by our classifier
