@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\title{lec520: Final Review I}
+\author{Dylan Tang}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Ex 1. Predicting House Prices}
+What is wrong:
+\begin{itemize}
+    \item Not standardized - can't compare coefficients by magnitude
+    \item Small sample size - results not generalizable to the population
+    \item Multicollinearity - need to consider interaction terms in regression model
+    \item Outliers/influential points - Skews coefficients in the model, can graph several points for outlier
+    \item Model may not be linear - graph several points to check for linearity
+\end{itemize}
+
+\section{Ex 2. Fraud Detection Classification}
+What is wrong:
+\begin{itemize}
+    \item 25\% of rows are dropped due to inner merge, ignores potential nonresponse bias - representativeness issue
+        \begin{itemize}
+            \item Can instead do an outer merge, replace NaN values with default val, or do analysis on dropped column
+        \end{itemize}
+    \item Class imbalance - cases of fraud are much less rare than non-fraud, need to check accuracy, precision, recall of \textbf{minority class}
+        \begin{itemize}
+            \item Standard \texttt{train\_test\_split} may not provide enough fraud samples in each fold
+        \end{itemize}
+\end{itemize}
+\section{Final Notes}
+\begin{itemize}
+    \item Final will have more short answer rather than MC
+\end{itemize}
+\end{document}
