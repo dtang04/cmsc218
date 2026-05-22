@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\title{lec522: Final Review 2}
+\author{Dylan Tang}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Ex. 3 PCA}
+
+\[
+    Z = aX_1 + bX_2
+\]
+\begin{itemize}
+    \item Given four PCA basis vector choices (assume the first PCA vector), which one is actually from the data?
+    \item Given a choice $PC_1$, project $X_1, \dots, X_n$ onto the $PC$, $Z_1 \dots Z_n$. Check the variation of $Z_1 \dots Z_n$.
+    \item PCs are variation maximizing, a correct $PC_1$ is a basis whose projections are spread out.
+    \item In our example, the $PC$ follows
+    \[
+        PC_1 =  \begin{bmatrix} \text{Age} \\ \text{AnnualIncome} \\ \text{SpendingScore} \\ \text{OnlineVisits} \end{bmatrix}
+    \]
+    \item In our example, \texttt{Age} and \texttt{AnnualIncome} have a positive correlation, not a negative correlation. So the PC
+    \[
+        PC_1 = \begin{bmatrix} 0.56 \\ -0.78 \\ 0.32 \\ 0.03\end{bmatrix}
+    \] can be eliminated.
+    That leaves the correct answer:
+    \[
+         PC_1 = \begin{bmatrix} 0.56 \\ 0.61 \\ -0.31 \\ 0.02\end{bmatrix}
+    \]
+    \item Furthermore, we know that \texttt{OnlineVisits} has the least variance, so it should have the smallest contribution to the principal component. So the PC
+    \[
+        PC_1 = \begin{bmatrix} 0.56 \\ -0.78 \\ 0.32 \\ 0.03\end{bmatrix}
+    \] can also be eliminated.
+\end{itemize}
+\section{Ex. 4 Building a Model}
+\begin{itemize}
+    \item ID should not be included inside the model - IDs are independent and spurious trends can be found that are not easily understandable
+    \item Standardize outliers, or can convert to percentile
+    \item One-hot encoding creates one column per category, label encoding assigns each label a number.
+        \item Label encoding - model might assume that there is an ordering, when there isn't
+        \item One hot encoding - creates a column per unique level of the categorical variable, can result in too many columns to fit to (sparse matrix)
+\end{itemize}
+\end{document}
