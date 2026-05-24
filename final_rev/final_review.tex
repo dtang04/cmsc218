@@ -1,0 +1,417 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{CMSC 218 Review}
+\author{Dylan Tang}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Pandas}
+\begin{itemize}
+    \item \textbf{Group by}: Collapses rows that share the same attribute into one row, and performs an aggregate operation on the collapsed rows.
+    \item Ex. \texttt{df.groupby(["col"]).mean()}
+    \item To group with multiple columns, use \texttt{agg()}:
+    \begin{verbatim}
+df.agg(col1_mean = ("col1", "mean"), col2_median = ("col2", "median"))
+    \end{verbatim}
+    \item \textbf{Merge}: Merge by a common column
+    \item Ex. \texttt{merged = pd.merge(df1, df2, on="id", how="inner")}
+    \item \texttt{how}:
+        \begin{itemize}
+            \item \texttt{inner} - merge takes intersection of both \texttt{df1["id"]}, \texttt{df2["id"]}
+            \item \texttt{outer} - merge takes union of \texttt{df1["id"]}, \texttt{df2["id"]}
+            \item \texttt{left} - merge uses \texttt{df1["id"]} as index
+            \item \texttt{right} - merge uses \texttt{df2["id"]} as index
+        \end{itemize}
+    \item \texttt{outer}, \texttt{left}, \texttt{right} can produce NaN.
+\end{itemize}
+
+\section{Sampling}
+\begin{itemize}
+    \item \textbf{68-95-99.7 rule} - 68\% of samples fall within 1 SD, 95\% of samples fall within 2 SD, 99.7\% of samples fall within 3 SD
+    \item \textbf{Stratified samples} - point estimate is a weighted average of sub populations
+        \begin{itemize}
+            \item $\bar{X} = w_1\bar{X}_1 + \ldots + w_n\bar{X}_n$
+            \item $\text{Var}(\bar{X}) = w_1^2\text{Var}(\bar{X}_1) + \ldots + w_n^2\text{Var}(\bar{X}_n)$
+        \end{itemize}
+    \item Ensures representativeness of all populations according to preset weights
+    \item \textbf{95\% CI for proportions}:
+        \[
+            C = \hat{p} \pm 1.96 \cdot \text{SE}(\hat{p})
+        \]
+        \[
+            \leq \hat{p} \pm 1.96\sqrt{\frac{0.5(0.5)}{n}}
+        \]
+\end{itemize}
+
+\section{Linear Model}
+\begin{itemize}
+    \item $Y = mX + b + \varepsilon$
+    \item $\mathbb{E}[Y] = m\mathbb{E}[X] + b$
+    \item $\text{Var}(Y) = m^2\text{Var}(X) + \text{Var}(\varepsilon)$
+    \item \textbf{Signal-Noise Ratio}:
+        \[
+            \text{SNR} = \frac{m^2\text{Var}(X)}{\text{Var}(\varepsilon)}
+        \]
+    \item $\text{Cov}(X, Y) = \mathbb{E}[(X - \mathbb{E}[X])(Y - \mathbb{E}[Y])]$
+    \item Affected by scaling: $\text{Cov}(aX, Y) = a \cdot \text{Cov}(X, Y)$
+    \item Measures the \textbf{scale} of association between $X$ and $Y$
+    \item \textbf{Correlation}:
+        \[
+            \rho = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X)\text{Var}(Y)}}
+        \]
+    \item Not affected by scaling $X \sim Y$
+    \item Measures the \textbf{strength}
+    \item \textbf{1-D OLS}:
+        \[
+            \hat{m} = \frac{\text{Cov}(X, Y)}{\text{Var}(X)} \Rightarrow \text{if } X, Y \text{ standardized}, \quad \hat{m} = \frac{\text{Cov}(X, Y)}{\text{Var}(X)} = \text{Cov}(X, Y)
+        \]
+        \[
+            \hat{b} = \mathbb{E}[Y] - \hat{m}\mathbb{E}[X]
+        \]
+        \[
+            \rho = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X)\text{Var}(Y)}} = \text{Cov}(X, Y)
+        \]
+        \[
+            \Rightarrow \hat{m} = \rho
+        \]
+\end{itemize}
+
+\section{Bias-Variance Decomposition}
+\[
+    \mathbb{E}[(\hat{y} - y)^2] = \underbrace{(\mathbb{E}[\hat{m}] - m)^2}_{\textcolor{blue}{\text{Bias}^2(\hat{m})}} + \underbrace{(\mathbb{E}[\hat{b}] - b)^2}_{\textcolor{blue}{\text{Bias}^2(\hat{b})}} + \underbrace{\text{Var}(\hat{m}) + \text{Var}(\hat{b})}_{\textcolor{blue}{\text{Variance}}} + \underbrace{\text{Var}(\varepsilon)}_{\textcolor{blue}{\text{Error}}}
+\]
+
+\section{Multivariate OLS}
+\begin{itemize}
+    \item $y = X\beta + \varepsilon$, \quad $X \in \mathbb{R}^{n \times p}$, $\beta \in \mathbb{R}^{p \times 1}$, $\varepsilon \in \mathbb{R}^{n \times p}$, $y \in \mathbb{R}^{n \times p}$
+    \item $\arg\min_\beta |Y - X\beta|^2 \Rightarrow \hat{\beta} = (X^TX)^{-1}X^Ty \Rightarrow \hat{y} = X\hat{\beta} = X(X^TX)^{-1}X^Ty$
+    \item $\beta_j \neq \frac{\text{Cov}(X_j, y_j)}{\text{Var}(X_j)}$, so $\hat{m} \neq \rho$ after standardizing $X, y$.
+    \item A large $\beta_j$ only indicates that one predictor is important in context of other predictors.
+    \item $R^2 = 1 - \frac{\sum(\hat{y} - y)^2}{\sum(\bar{y} - y)^2} = 1 - \frac{\text{SSE}}{\text{SST}}$
+    \item Measures how much better we do than the baseline model, $\bar{y}$.
+\end{itemize}
+
+\subsection{Ridge Regression}
+Smooth predictions by adding L2 regularizer:
+\[
+    \arg\min_\beta |Y - X\beta|^2 + \alpha|\beta|^2 \Rightarrow \hat{\beta} = (X^TX + \alpha I)^{-1}X^Ty \Rightarrow \hat{y} = (X^TX + \alpha I)^{-1}y
+\]
+
+\section{Building a Regression Predictor}
+\begin{itemize}
+    \item \textbf{Inference model}: Given $(x_i, y)$ pairs, produce $f(\theta)$.
+    \item \textbf{Prediction model}: Given $X, y$ as inputs, organizes the inputs in $(X, y)$ pairs.
+\end{itemize}
+
+\textbf{Typical regression pipeline}:
+\begin{verbatim}
+X = df[...]
+y = df[...]
+X = StandardScaler().fit_transform(X)
+X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+r2_score(y_test, y_pred)
+\end{verbatim}
+
+\section{Generalization}
+\begin{itemize}
+    \item $T_e$ - expected testing loss
+    \item $T_r$ - expected training loss
+    \item $T_e - T_r = G$ (generalization gap)
+    \[
+        \underbrace{(T_e - T_r)}_{G} + T_r = T_e
+    \]
+    \item A complex model is well-fit to the training data, and as such it is less generalizable - $G \uparrow$, $T_r \downarrow$.
+    \item A simple model likely can be well generalized, but has high training error - $G \downarrow$, $T_r \uparrow$.
+    \item A good model jointly minimizes $G$, $T_r$.
+\end{itemize}
+
+This tradeoff is also seen in the Bias-Variance Decomposition for squared loss:
+\[
+    \mathbb{E}[\ell(y_{\text{out}}, y_{\text{true}})] = \mathbb{E}[\ell(\hat{f}(x), y_{\text{true}})]
+\]
+\[
+    \mathbb{E}[(y_{\text{true}} - \hat{f}(x))^2] = \underbrace{(\mathbb{E}[\hat{f}(x)] - y_{\text{true}})^2}_{\textcolor{blue}{\text{Bias}}} + \underbrace{\text{Var}(\hat{f}(x))}_{\textcolor{blue}{\text{Variance}}} + \underbrace{\sigma^2}_{\textcolor{blue}{\text{Noise}}}
+\]
+
+\begin{itemize}
+    \item A simple model has less variance, but more bias
+    \item A complex model has low bias, high variance.
+    \item OLS jointly optimizes over bias and variance by minimizing squared loss.
+\end{itemize}
+
+\section{Autoregression}
+\begin{itemize}
+    \item \textbf{Autoregression}: Using past values of $y$ to predict future values of $y$.
+    \item Any model that predicts an outcome based on time can may be subject to autoregression.
+    \item \textbf{AR(1) Model}:
+        \[
+            y_t = \underbrace{\beta_{\text{lag}}y_{t-1}}_{\textcolor{blue}{\text{AR(1) param}}} + \underbrace{X\beta}_{\textcolor{blue}{\text{other covariates}}}
+        \]
+\end{itemize}
+
+\textbf{Typical AR(1) Pipeline}:
+\begin{verbatim}
+df["y_{t-1}"] = df["y"].shift(1)
+df.dropna(how="any")
+
+X = df[...]
+y = df[...]
+
+tscv = TimeSeriesSplit()
+for train_idx, test_idx in tscv.split(X):
+    X_train, X_test = X[train_idx], X[test_idx]
+    y_train, y_test = y[train_idx], y[test_idx]
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+r2_score(y_test, y_pred)
+\end{verbatim}
+
+\begin{itemize}
+    \item \textbf{Longitudinal model} - uses $y_{t-k}, \ldots, y_{t-1}$ to predict $y_t$
+    \item \textbf{Cross-sectional model} - uses covariates $X$ to predict $y_t$
+\end{itemize}
+
+\section{Logistic Regression}
+Given $(X_i, y_i)$, define the probability $y_i$ belongs to class 1 as
+\[
+    \hat{p}_i = \frac{1}{1 + e^{-w^Tx_i + b}}
+\]
+Then, minimizes cross-entropy loss:
+\[
+    \ell(y, \hat{p}) = \sum_i \left[ y_i \log(\hat{p}_i) + (1 - y_i)(1 - \hat{p}_i) \right]
+\]
+\begin{itemize}
+    \item By converting $X_i$s to $\hat{p}_i$s, reduces influence of $x_i$s that are outliers/high leverage points
+\end{itemize}
+
+\section{Classification}
+\begin{itemize}
+    \item \textbf{Binary Classification}: Train model on weights $w$, bias $b$ s.t. the decision boundary $w^Tx + b$ maximizes correct predictions.
+    \item \textbf{Confusion Matrix}:
+        \begin{center}
+        \begin{tabular}{c|c|c}
+             & \multicolumn{2}{c}{Actual} \\
+            Predicted & T & N \\
+            \hline
+            T & TP & FP \\
+            N & FN & TN \\
+        \end{tabular}
+        \end{center}
+\end{itemize}
+
+\subsection{Multiclass Classification}
+\begin{itemize}
+    \item Instead of $y_i \in \{0, 1\}$, now $y_i \in \mathcal{L}$, where $\mathcal{L} = \{1, \ldots, k\}$.
+    \item Models for multiclass classification: Logistic Regression, NN/CNN with Cross Entropy loss
+\end{itemize}
+
+\textbf{Metrics}:
+\begin{itemize}
+    \item \textbf{Accuracy}: $\displaystyle\frac{\text{TP} + \text{TN}}{\text{TP} + \text{FP} + \text{TN} + \text{FN}}$
+    \item \textbf{Precision}: $\displaystyle\frac{\text{TP}}{\text{TP} + \text{FP}} = \frac{\text{True positives}}{\text{\# of predicted positives}}$
+        \begin{itemize}
+            \item How accurate are the model's positive classifications
+        \end{itemize}
+    \item \textbf{Recall}: $\displaystyle\frac{\text{TP}}{\text{TP} + \text{FN}} = \frac{\text{True positives}}{\text{\# of actual positives}}$
+        \begin{itemize}
+            \item What is detection rate for the true positives!
+        \end{itemize}
+\end{itemize}
+
+\textbf{Example (Multiclass)}:
+\begin{center}
+\begin{tabular}{c|ccc}
+     & \multicolumn{3}{c}{Predicted} \\
+    Actual & 1 & 2 & 3 \\
+    \hline
+    1 & $n_{11}$ & $n_{12}$ & $n_{13}$ \\
+    2 & $n_{21}$ & $n_{22}$ & $n_{23}$ \\
+    3 & $n_{31}$ & $n_{32}$ & $n_{33}$ \\
+\end{tabular}
+\end{center}
+
+\[
+    \text{Precision of class 2}: \frac{n_{22}}{n_{12} + n_{22} + n_{32}}
+\]
+\[
+    \text{Recall of class 2}: \frac{n_{22}}{n_{21} + n_{22} + n_{23}}
+\]
+
+\section{Two Sample Z-Test}
+\begin{align*}
+    H_0&: \mu_A = \mu_B \quad \text{There is no difference in the two populations.} \\
+    H_A&: \mu_A \neq \mu_B \quad \text{There is a difference in the two populations.}
+\end{align*}
+
+\[
+    z^* = \frac{\bar{x}_A - \bar{x}_B - 0}{\frac{\sigma_A}{\sqrt{n_A}} + \frac{\sigma_B}{\sqrt{n_B}}}
+\]
+
+If $P(z > z^*) < \alpha$, reject $H_0$ for $H_A$.
+\begin{itemize}
+    \item P-value is the false discovery rate.
+\end{itemize}
+
+\section{Efficiency vs. Robustness}
+\begin{itemize}
+    \item \textbf{Efficiency} - tries to use as much of the training data as possible to reach a conclusion
+    \item \textbf{Robustness} - protects against bad assumptions, noise, or inaccurate data
+    \item Regularization is an example of robustness. Ridge regression, for example imposes prior $w \sim N(0, \frac{1}{\lambda})$.
+        \begin{itemize}
+            \item Trade off a small increase in bias for a large decrease in variance
+        \end{itemize}
+    \item Other robustness methods:
+        \begin{itemize}
+            \item Acquire more data to decrease leverage of an influential point
+            \item Convert data to percentiles or ranks (Low Rank Prior)
+                \begin{itemize}
+                    \item Can lose some of the data's meaningfulness, but improves robustness
+                \end{itemize}
+            \item Find a low-rank representation of data (PCA)
+        \end{itemize}
+\end{itemize}
+
+\section{PCA}
+\begin{itemize}
+    \item Reduce high-dimensional data along a low-dimensional basis composed of principal components (PCs).
+        \begin{itemize}
+            \item Each PC is in the direction of greatest variance in the data
+        \end{itemize}
+    \item To find which basis is the result of PCA check:
+        \begin{itemize}
+            \item Does the basis vector have stronger components in variance maximizing areas.
+            \item Does the basis keep positive/negative correlations as exhibited in the data?
+        \end{itemize}
+\end{itemize}
+
+\section{Neural Networks}
+
+\subsection{Forward Propagation}
+\begin{itemize}
+    \item Given input layer $X \in \mathbb{R}^{n \times p}$, forward propagation is defined by:
+    \item At $X$ (layer 0):
+        \[
+            Z^{(0)} = W^{(0)}X + b^{(0)}, \quad A^{(0)} = \sigma(Z^{(0)})
+        \]
+    \item At hidden layer $\ell$:
+        \[
+            Z^{(\ell)} = W^{(\ell)}A^{(\ell-1)} + b^{(\ell)}, \quad A^{(\ell)} = \sigma(Z^{(\ell)})
+        \]
+    \item Then, $\hat{Y} = A^{(L)}$, and the loss function is given by $\ell(Y, \hat{Y})$ at layer $L$.
+\end{itemize}
+
+\subsection{Back Propagation}
+\[
+    \frac{\partial \ell}{\partial W^{(\ell)}} = \frac{\partial \ell}{\partial A^{(\ell)}} \cdot \frac{\partial A^{(\ell)}}{\partial Z^{(\ell)}} \cdot \frac{\partial Z^{(\ell)}}{\partial W^{(\ell)}}
+\]
+\[
+    = \left[ \frac{\partial \ell}{\partial A^{(\ell)}} \odot \sigma'(Z^{(\ell)}) \right] (A^{(\ell-1)})^T
+\]
+
+\[
+    \frac{\partial \ell}{\partial A^{(\ell)}} = \frac{\partial}{\partial A^{(\ell)}} \ell(\hat{y}, y) = \frac{\partial}{\partial A^{(\ell)}} \ell(A^{(L)}, y) = \frac{\partial}{\partial A^{(\ell)}} \ell\left(\sigma(\underbrace{W^{(L-1)}A^{(L-1)} + b^{(L-1)}}_{\textcolor{blue}{Z^{(L)}}}), y\right)
+\]
+\[
+    = \frac{\partial}{\partial A^{(\ell)}} \ell\left(\sigma(W^{(L-1)}\sigma(\underbrace{W^{(L-2)}A^{(L-2)} + b^{(L-2)}}_{\textcolor{blue}{Z^{(L-1)}}}) + b^{(L-1)}), y\right)
+\]
+\[
+    \ldots
+\]
+
+\textbf{Notes}:
+\begin{itemize}
+    \item $X_1, \ldots, X_N$ should be standardized to prevent exploding/vanishing gradients
+    \item One forward + backward pass is called an \textbf{epoch}
+    \item With no activation function, we have that
+        \[
+            \hat{y} = W^{(L-1)}W^{(L-2)}\ldots W^{(1)}X + b^{(1)} + \ldots + b^{(L-2)} + b^{(L-1)}
+        \]
+        which is just a linear model.
+\end{itemize}
+
+\section{Convolution}
+\begin{itemize}
+    \item $X$ is the input signal
+    \item $Y$ is the filter/kernel that slides along $X$
+\end{itemize}
+
+\textbf{Ex. 1}: $X = [a, b, c, d, e]$, $Y = [-1, 1]$
+\[
+    X * Y = [-a + b, -b + c, -c + d, -d + e]
+\]
+All convolutions in this case are stride 1, no padding.
+
+\textbf{Ex. 2}:
+\[
+    X = \begin{bmatrix} 0 & 0 & 0 & 0 \\ 0 & 1 & 1 & 0 \\ 0 & 1 & 1 & 0 \\ 0 & 0 & 0 & 0 \end{bmatrix}, \quad
+    Y = \begin{bmatrix} 1 & -1 \\ -1 & 1 \end{bmatrix}
+\]
+\[
+    X * Y = \begin{bmatrix} 1 & 0 & -1 \\ 0 & 0 & 0 \\ -1 & 0 & 1 \end{bmatrix}
+\]
+
+A convolution is a fast way to disseminate information throughout the network.
+
+\textbf{Ex. 3}: Given $X = [a \quad b \quad c \quad d \quad e]$, $f_1 = [f_{11} \quad f_{12}]$, $f_2 = [f_{21} \quad f_{22}]$
+
+\[
+    f_1 * X = [f_{11}a + f_{12}b, \quad f_{11}b + f_{12}c, \quad f_{11}c + f_{12}d, \quad f_{11}d + f_{12}e]
+\]
+\begin{align*}
+    f_2 * f_1 * X = [&f_{21}(f_{11}a + f_{12}b) + f_{22}(f_{11}b + f_{12}c), \\
+    &f_{21}(f_{11}b + f_{12}c) + f_{22}(f_{11}c + f_{12}d), \\
+    &f_{21}(f_{11}c + f_{12}d) + f_{22}(f_{11}d + f_{12}e)]
+\end{align*}
+
+\begin{itemize}
+    \item In each component in $f_2 * f_1 * X$, there are three data points $(a, b, c)$, $(b, c, d)$, $(c, d, e)$.
+    \item But, the data points at the edges $(a, e)$ are represented less than data points close to the middle.
+    \item Each subsequent convolution reduces each dimension by 1 / element
+        \begin{itemize}
+            \item Given $X \in \mathbb{R}^{n \times \Lambda}$, $X * Y \in \mathbb{R}^{(\Lambda-1) \times (\Lambda-1)}$
+        \end{itemize}
+\end{itemize}
+
+\section{Attention}
+\begin{itemize}
+    \item Given $X \in \mathbb{R}^d$, let $g \in \mathbb{R}^d$ be an attention filter of the same dimension.
+    \item Then, each component of $g_i$ determines how much attention is placed on the component $X_{ij}$.
+    \item
+        \[
+            X \odot g = \begin{bmatrix} - x_1 - \\ \vdots \\ - x_n - \end{bmatrix} \begin{bmatrix} g_1 \\ \vdots \\ g_d \end{bmatrix} = \begin{bmatrix} x_{11} \cdot g_1 & x_{12} \cdot g_2 & \ldots & x_{1d} \cdot g_d \\ \vdots & & & \vdots \\ x_{n1} \cdot g_1 & x_{n2} \cdot g_2 & & x_{nd} \cdot g_d \end{bmatrix}
+        \]
+\end{itemize}
+
+\section{Large Language Models}
+\begin{itemize}
+    \item LLMs are fundamentally next-token predictors
+    \item Each word is assigned a unique token $t$
+    \item Then, given tokens $t_1 \ldots t_k$, predict $t_{k+1}$
+\end{itemize}
+
+LLMs are trained in the following way:
+\begin{enumerate}
+    \item \textbf{Foundational Model Training} - learn weights from entire Internet
+    \item \textbf{Mid-training} - Refine weights on questions asked on the Internet, learn a small set of conversational data
+    \item \textbf{Post-training} - Using real people to finetune the model with Sophisticated Conversations
+\end{enumerate}
+
+LLMs typically downsample user queries into a densely represented embedding vector. This embedding vector can then be compared to saved embeddings in a vector database, and can further
+\begin{itemize}
+    \item \textbf{Encoder/Autoencoder} - reduce $X_1 \ldots X_n$ to dense representation, then upsample the response.
+\end{itemize}
+
+\end{document}
