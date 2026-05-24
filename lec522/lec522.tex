@@ -35,6 +35,12 @@
          PC_1 = \begin{bmatrix} 0.56 \\ 0.61 \\ -0.31 \\ 0.02\end{bmatrix}
     \]
 \end{itemize}
+\textbf{Notes:}
+\begin{itemize}
+    \item \texttt{Variance: }  Firstly, determine whether the magnitude of the PC actually reflects the amount of variance for that column.
+    \item \texttt{Correlation: }Compare relationships between columns and see if it aligns with the PCs. If \texttt{Age} and \texttt{SpendingScore} followed a negative correlation from the raw
+    data, then the PCs should not have the same sign.
+\end{itemize}
 \section{Ex. 4 Building a Model}
 \begin{itemize}
     \item ID should not be included inside the model - IDs are independent and spurious trends can be found that are not easily understandable
