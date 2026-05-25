@@ -286,6 +286,10 @@ If $P(z > z^*) < \alpha$, reject $H_0$ for $H_A$.
 
 \section{PCA}
 \begin{itemize}
+    \item Rank k dimension reduction given by
+    \[
+        X_k = U_k\Sigma_k{V^T}_k
+    \]
     \item Reduce high-dimensional data along a low-dimensional basis composed of principal components (PCs).
         \begin{itemize}
             \item Each PC is in the direction of greatest variance in the data
@@ -379,7 +383,7 @@ A convolution is a fast way to disseminate information throughout the network.
 \begin{itemize}
     \item In each component in $f_2 * f_1 * X$, there are three data points $(a, b, c)$, $(b, c, d)$, $(c, d, e)$.
     \item But, the data points at the edges $(a, e)$ are represented less than data points close to the middle.
-    \item Each subsequent convolution reduces each dimension by 1 / element
+    \item Each subsequent convolution reduces each dimension by 1
         \begin{itemize}
             \item Given $X \in \mathbb{R}^{n \times \Lambda}$, $X * Y \in \mathbb{R}^{(\Lambda-1) \times (\Lambda-1)}$
         \end{itemize}
