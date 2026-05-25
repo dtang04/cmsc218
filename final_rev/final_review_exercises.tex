@@ -1,0 +1,183 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{array}
+\geometry{margin=1in}
+
+\title{CMSC 218 Final Exam Practice}
+\author{Dylan Tang}
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Regression Analysis Scenario: Predicting Home Prices}
+
+\textbf{Issues with the model:}
+
+\begin{itemize}
+    \item \textbf{Predictors are not standardized.} This means that we cannot directly discern the influence of the covariates by looking at $\beta$s alone, since the $\beta$s are in terms of different units.
+
+    \item \textbf{Multicollinearity between predictors} -- Predictors such as Square Feet and Price are likely to have high covariance. We should account for this covariance via an interaction term: \texttt{SquareFeet:Price}.
+
+    \item \textbf{Outliers:} Home 15 has a Square Feet much greater than the other homes, and it also has the greatest Distance Downtown and is priced far above the rest of the homes. This outlier may skew the model coefficients, and inflating the significance of Square Feet and Distance Downtown as predictors of price.
+
+    \item \textbf{Nonlinearity} -- The OLS model is only accurate on linear data. We should verify that the data is indeed linear before proceeding with the model. If the data is not linear, perhaps we should use a different regression model, such as logistic regression.
+\end{itemize}
+
+\section{Featurization and Data Preparation}
+
+\textbf{Explanatory:}
+\begin{itemize}
+    \item Square Feet
+    \item Bedrooms
+    \item Distance Downtown
+\end{itemize}
+
+\textbf{Response:} Price
+
+\subsection{Part 1}
+
+\begin{enumerate}
+    \item \textbf{Numerical:} Age, income, avg-humidity, commute-min, has-entries-log, remote-work-days-per
+
+    \textbf{Categorical:} Neighborhood, owns-car, transit-card, preferred-transportation
+
+    \textbf{Ordinal:} None
+
+    \textbf{Identifiers:} Commuter\_id
+
+    \textbf{Free-text:} notes
+
+    \item Neighborhood, transit-card, owns-car have missing values.
+
+    Notes may have to be converted to a categorical variable, or dropped entirely.
+
+    \item
+    \begin{itemize}
+        \item C005 has none for transit-card
+        \item C009 has a missing value for owns-car
+        \item C006 has a missing value for neighborhood
+    \end{itemize}
+
+    \item
+    \begin{itemize}
+        \item Notes -- high variance between responses
+        \item Commuter\_id -- spurious trends can be found from identifier
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Part 2}
+
+\begin{enumerate}
+    \item No, as Commuter\_id is simply an identifier associated with each person in the dataset. If we were to include it in our model, the model may find spurious associations between Commuter\_id and the response, when in fact no such association actually exists in the population.
+
+    \item \textbf{One-hot encoding:} Assign each kind of neighborhood a column (e.g., Northside, West End, etc.). Then, each row will have 1 under that neighborhood's column if the commuter belongs to that neighborhood.
+
+    \textbf{Ex.}
+    \begin{center}
+    \begin{tabular}{c|c|c|c|c|c}
+        Commuter\_id & $\ldots$ & Northside & West End & Downtown & $\ldots$ \\
+        \hline
+        C001 & & 1 & 0 & 0 & \\
+        C002 & & 0 & 1 & 0 & \\
+        C003 & $\ldots$ & 0 & 0 & 1 & $\ldots$ \\
+        $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
+    \end{tabular}
+    \end{center}
+
+    \textbf{Label encoding:} Assign each kind of neighborhood a label (e.g., Northside = 1, West End = 2, etc.)
+
+    \begin{itemize}
+        \item One-hot encoding -- leads to a significant increase in the number of predictors, as each neighborhood now populates a column, which can lead to overfitting.
+        \item Label encoding -- assigns an ordering to neighborhoods by assigning each neighborhood to a label, but in fact no such ordering exists. This can make interpreting the model's results difficult.
+    \end{itemize}
+
+    \item
+    \begin{itemize}
+        \item Preferred-transport is categorical -- need to encode it via one-hot encoding or label encoding
+        \item Mixed category is ambiguous -- does not specify exactly which combination of transport is preferred. If Mixed is significant, we can only say that many commuters prefer multiple modes of transport.
+    \end{itemize}
+
+    \item No, notes should not be used in an introductory model, as there is high variation in responses.
+    \begin{itemize}
+        \item We could run a separate classifier that predicts whether each note suggests the commuter is of high income or not, but this introduces an additional layer of complexity in the model, and makes the model less generalizable.
+    \end{itemize}
+
+    The risks of using free-text data are:
+    \begin{enumerate}
+        \item High variation in responses
+        \item Responses are not always indicative of what we want to predict
+        \item Including free-hand text in our model adds an additional layer of complexity, making our model less generalizable.
+    \end{enumerate}
+
+    \item
+    \begin{enumerate}
+        \item This may be an influential point that skews the income predictor.
+
+        \item
+        \begin{itemize}
+            \item \textbf{Normalization} -- Even with normalization, this point still can be an influential point
+            \item \textbf{Regression models} -- Can skew model predictions to heavily weight predictions by income, when such an association actually does not exist in the population.
+            \item \textbf{Distance-based models} such as K-means also can put too great of a weighting on high income due to this point. For example, the centroid can get pulled outwards to high income thresholds due to this point.
+        \end{itemize}
+
+        \item
+        \begin{itemize}
+            \item Convert income to percentiles (decreases efficiency, increases robustness)
+            \item Regularization (penalize large model weights)
+            \item Collect more data to decrease the outlier's leverage on the model
+        \end{itemize}
+    \end{enumerate}
+\end{enumerate}
+
+\subsection{Part 3}
+
+\begin{enumerate}
+    \item \textbf{Non-response} -- Perhaps the commuters were unwilling to populate these fields, or they did not want to fill out the missing fields.
+
+    \item The missing values should not be removed, as then the whole data point would have to be omitted from the dataset; this is costly since the sample size is already small.
+
+    Instead, marking them as ``Unknown'' is possibly the best strategy, as the data point can not only be kept, but also associations can perhaps be observed between the response variable and these missing values.
+
+    \item Yes. It is very possible that fields with missing responses follow some sort of pattern (ex. those who don't have a car may be more likely to skip the survey question than to answer ``No'').
+\end{enumerate}
+
+\section{Evaluating a Classification Pipeline for Fraud Detection}
+
+\textbf{Issues with the pipeline:}
+
+\begin{enumerate}
+    \item The inner join between transactions and customer-profiles removes any customer\_ids that appear in one dataset but not the other.
+    \begin{itemize}
+        \item It may be possible that a fraudulent transaction has been done without a customer profile, and the model can use this mismatch to better predict fraudulent transactions.
+    \end{itemize}
+
+    \item \textbf{Dataset imbalance} between fraudulent and non-fraudulent transactions.
+    \begin{itemize}
+        \item Since non-fraudulent transactions far outweigh fraudulent transactions, even models that predict ``Not Fraudulent'' on every transaction can achieve a very high accuracy.
+        \item Can weigh a fraudulent transaction more than non-fraudulent transactions.
+        \item Can use recall of the fraudulent class to better score how the model is classifying fraudulent transactions specifically.
+    \end{itemize}
+
+    \item \textbf{Possible collinearity} in amount and num-items as predictors.
+    \begin{itemize}
+        \item Can use interaction term \texttt{amount:num-items} to capture high covariance in predictors.
+    \end{itemize}
+\end{enumerate}
+
+\section{PCA}
+
+\begin{itemize}
+    \item Online visits has the least standardized variance, so it should have the least contribution to the PC.
+
+    \item Age, Annual Income, and Spending Score are all positively correlated, so we would expect their PC components to all follow the same sign.
+
+    \item So, a reasonable PC1 would be:
+    \[
+        PC_1 = \begin{bmatrix} \text{Age} \\ \text{Annual Income} \\ \text{Spending Score} \\ \text{Online Visits} \end{bmatrix} = \begin{bmatrix} 0.4 \\ 0.5 \\ 0.2 \\ 0.1 \end{bmatrix}
+    \]
+\end{itemize}
+
+\end{document}
