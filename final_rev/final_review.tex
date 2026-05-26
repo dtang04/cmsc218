@@ -395,7 +395,7 @@ A convolution is a fast way to disseminate information throughout the network.
     \item Then, each component of $g_i$ determines how much attention is placed on the component $X_{ij}$.
     \item
         \[
-            X \odot g = \begin{bmatrix} - x_1 - \\ \vdots \\ - x_n - \end{bmatrix} \begin{bmatrix} g_1 \\ \vdots \\ g_d \end{bmatrix} = \begin{bmatrix} x_{11} \cdot g_1 & x_{12} \cdot g_2 & \ldots & x_{1d} \cdot g_d \\ \vdots & & & \vdots \\ x_{n1} \cdot g_1 & x_{n2} \cdot g_2 & & x_{nd} \cdot g_d \end{bmatrix}
+            X g = \begin{bmatrix} - x_1 - \\ \vdots \\ - x_n - \end{bmatrix} \begin{bmatrix} g_1 \\ \vdots \\ g_d \end{bmatrix} = \begin{bmatrix} x_{11} \cdot g_1 & x_{12} \cdot g_2 & \ldots & x_{1d} \cdot g_d \\ \vdots & & & \vdots \\ x_{n1} \cdot g_1 & x_{n2} \cdot g_2 & & x_{nd} \cdot g_d \end{bmatrix}
         \]
 \end{itemize}
 
