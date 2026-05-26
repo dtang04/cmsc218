@@ -346,6 +346,25 @@ If $P(z > z^*) < \alpha$, reject $H_0$ for $H_A$.
         which is just a linear model.
 \end{itemize}
 
+\begin{verbatim}
+    from sklearn.preprocessing import StandardScalar
+    X_norm = StandardScalar().fit_transform(X)
+\end{verbatim}
+
+\subsection{Label Encoding, One-Hot Encoding}
+
+\textbf{Label Encoding}:
+\begin{verbatim}
+    from sklearn.preprocessing import LabelEncoder
+    X[label_encoded_var] = LabelEncoder().fit_transform(X[cat_col])
+\end{verbatim}
+
+\textbf{One-Hot Encoding}
+\begin{verbatim}
+    from sklearn.preprocessing import OneHotEncoder
+    encoded_X_cols = OneHotEncoder().fit_trnasform(X[cat_col])
+\end{verbatim}
+
 \section{Convolution}
 \begin{itemize}
     \item $X$ is the input signal
