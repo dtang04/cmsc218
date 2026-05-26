@@ -385,7 +385,7 @@ A convolution is a fast way to disseminate information throughout the network.
     \item But, the data points at the edges $(a, e)$ are represented less than data points close to the middle.
     \item Each subsequent convolution reduces each dimension by 1
         \begin{itemize}
-            \item Given $X \in \mathbb{R}^{n \times \Lambda}$, $X * Y \in \mathbb{R}^{(\Lambda-1) \times (\Lambda-1)}$
+            \item Given $X \in \mathbb{R}^{n \times m}$, $X * Y \in \mathbb{R}^{(n-1) \times (m-1)}$
         \end{itemize}
 \end{itemize}
 
