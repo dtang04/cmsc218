@@ -126,8 +126,8 @@ id & dept & hrs \\
 \begin{itemize}
     \item $y = X\beta + \varepsilon$, \quad $X \in \mathbb{R}^{n \times p}$, $\beta \in \mathbb{R}^{p \times 1}$, $\varepsilon \in \mathbb{R}^{n \times p}$, $y \in \mathbb{R}^{n \times p}$
     \item $\arg\min_\beta |Y - X\beta|^2 \Rightarrow \hat{\beta} = (X^TX)^{-1}X^Ty \Rightarrow \hat{y} = X\hat{\beta} = X(X^TX)^{-1}X^Ty$
-    \item $\beta_j \neq \frac{\text{Cov}(X_j, y_j)}{\text{Var}(X_j)}$, so $\hat{m} \neq \rho$ after standardizing $X, y$.
-    \item A large $\beta_j$ only indicates that one predictor is important in context of other predictors.
+    \item $\beta_j \neq \frac{\text{Cov}(X_j, y_j)}{\text{Var}(X_j)}$, so $\hat{m} \neq \rho$ after standardizing $X, y$. 
+    \item A large $\beta_j$ only indicates that one predictor is important in context of other predictors. To compare $\beta_i, \beta_j$, $X_i, X_j$ must be standardized.
     \item $R^2 = 1 - \frac{\sum(\hat{y} - y)^2}{\sum(\bar{y} - y)^2} = 1 - \frac{\text{SSE}}{\text{SST}}$
     \item Measures how much better we do than the baseline model, $\bar{y}$.
 \end{itemize}
@@ -137,6 +137,13 @@ Smooth predictions by adding L2 regularizer:
 \[
     \arg\min_\beta |Y - X\beta|^2 + \alpha|\beta|^2 \Rightarrow \hat{\beta} = (X^TX + \alpha I)^{-1}X^Ty \Rightarrow \hat{y} = (X^TX + \alpha I)^{-1}y
 \]
+
+\begin{itemize}
+    \item Trades off efficiency (how much the model relies on the data) for robustness (how generalizable the data is)
+        \begin{itemize}
+            \item Trades off a small increase in $\text{bias}^2 = (\mathcal{E}[\hat{w}] - w)^2$ for a large decrease in $\text{Var}(\hat{w})$
+        \end{itemize}
+\end{itemize}
 
 \section{Building a Regression Predictor}
 \begin{itemize}
