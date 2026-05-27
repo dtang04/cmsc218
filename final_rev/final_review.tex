@@ -348,7 +348,7 @@ Then, minimizes cross-entropy loss:
 \end{align*}
 
 \[
-    z^* = \frac{\bar{x}_A - \bar{x}_B - 0}{\frac{\sigma_A}{\sqrt{n_A}} + \frac{\sigma_B}{\sqrt{n_B}}}
+    z^* = \frac{\bar{x}_A - \bar{x}_B - 0}{\sqrt{\frac{\sigma^2_A}{n_A} + \frac{\sigma^2_B}{n_B}}}
 \]
 
 If $P(z > z^*) < \alpha$, reject $H_0$ for $H_A$.
