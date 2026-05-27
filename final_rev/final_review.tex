@@ -67,12 +67,12 @@ id & dept & hrs \\
 
 \section{Sampling}
 \begin{itemize}
-    \item Given an RV $X$, $Var(X) = E[(X - E[X])^2] = E[X^2] - E[X]^2$
+    \item Given an RV $X$, $\text{Var}(X) = \mathbb{E}[(X - \mathbb{E}[X])^2] = \mathbb{E}[X^2] - \mathbb{E}[X]^2$
     \item \textbf{68-95-99.7 rule} - 68\% of samples fall within 1 SD, 95\% of samples fall within 2 SD, 99.7\% of samples fall within 3 SD
     \item \textbf{Stratified samples} - point estimate is a weighted average of sub populations
         \begin{itemize}
             \item $\bar{X} = w_1\bar{X}_1 + \ldots + w_n\bar{X}_n$
-            \item $\text{Var}(\bar{X}) = w_1^2\text{Var}(\bar{X}_1) + \ldots + w_n^2\text{Var}(\bar{X}_n)$
+            \item $\text{Var}(\bar{X}) = \text{Var}(w_1X_1) + \ldots + \text{Var}(w_nX_n) = w_1^2\text{Var}(\bar{X}_1) + \ldots + w_n^2\text{Var}(\bar{X}_n)$
         \end{itemize}
     \item Ensures representativeness of all populations according to preset weights
     \item \textbf{95\% CI for proportions}:
