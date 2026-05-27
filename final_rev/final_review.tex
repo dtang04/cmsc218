@@ -359,11 +359,26 @@ If $P(z > z^*) < \alpha$, reject $H_0$ for $H_A$.
     X[label_encoded_var] = LabelEncoder().fit_transform(X[cat_col])
 \end{verbatim}
 
+\begin{itemize}
+    \item Assigns each categorical variable outcome a numerical level.
+    \item As such, label encoding assumes that there is an ordering in outcomes, when none may exist. This may
+    make interpretation difficult, and may result in inflated coefficients.
+\end{itemize}
+
 \noindent\textbf{One-Hot Encoding}
 \begin{verbatim}
     from sklearn.preprocessing import OneHotEncoder
     encoded_X_cols = OneHotEncoder().fit_trnasform(X[cat_col])
 \end{verbatim}
+
+\begin{itemize}
+    \item Assigns each categorical variable outcome a separate column (or indicator variable).
+    \item Let $l$ be an arbitrary outcome. If $\mathbf{x_i \in l}$, then for the column
+    associated with $l$, $x_i$'s value is 1.
+    \item Unlike label encoding, one-hot encoding does not assume an ordering in outcomes.
+    \item However, too many outcomes can lead to a significant increase in predictors, which can distill possible
+    association and pull coefficients towards 0.
+\end{itemize}
 
 \section{Convolution}
 \begin{itemize}
