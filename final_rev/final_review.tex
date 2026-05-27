@@ -373,7 +373,7 @@ If $P(z > z^*) < \alpha$, reject $H_0$ for $H_A$.
 
 \begin{itemize}
     \item Assigns each categorical variable outcome a separate column (or indicator variable).
-    \item Let $l$ be an arbitrary outcome. If $\mathbf{x_i \in l}$, then for the column
+    \item Let $l$ be an arbitrary outcome. If $\mathbf {1}_{\{x_i \in l\}}$, then for the column
     associated with $l$, $x_i$'s value is 1.
     \item Unlike label encoding, one-hot encoding does not assume an ordering in outcomes.
     \item However, too many outcomes can lead to a significant increase in predictors, which can distill possible
