@@ -466,7 +466,7 @@ If $P(z > z^*) < \alpha$, reject $H_0$ for $H_A$.
 \noindent\textbf{One-Hot Encoding}
 \begin{verbatim}
     from sklearn.preprocessing import OneHotEncoder
-    encoded_X_cols = OneHotEncoder().fit_trnasform(X[cat_col])
+    encoded_X_cols = OneHotEncoder().fit_transform(X[cat_col])
 \end{verbatim}
 
 \begin{itemize}
@@ -525,10 +525,9 @@ A convolution is a fast way to disseminate information throughout the network.
 \begin{itemize}
     \item Given $X \in \mathbb{R}^d$, let $g \in \mathbb{R}^d$ be an attention filter of the same dimension.
     \item Then, each component of $g_i$ determines how much attention is placed on the component $X_{ij}$.
-    \item
-        \[
-            X g = \begin{bmatrix} - x_1 - \\ \vdots \\ - x_n - \end{bmatrix} \begin{bmatrix} g_1 \\ \vdots \\ g_d \end{bmatrix} = \begin{bmatrix} x_{11} \cdot g_1 & x_{12} \cdot g_2 & \ldots & x_{1d} \cdot g_d \\ \vdots & & & \vdots \\ x_{n1} \cdot g_1 & x_{n2} \cdot g_2 & & x_{nd} \cdot g_d \end{bmatrix}
-        \]
+    \[
+        X g = \begin{bmatrix} - x_1 - \\ \vdots \\ - x_n - \end{bmatrix} \begin{bmatrix} g_1 \\ \vdots \\ g_d \end{bmatrix} = \begin{bmatrix} x_{11} \cdot g_1 & x_{12} \cdot g_2 & \ldots & x_{1d} \cdot g_d \\ \vdots & & & \vdots \\ x_{n1} \cdot g_1 & x_{n2} \cdot g_2 & & x_{nd} \cdot g_d \end{bmatrix}
+    \]
 \end{itemize}
 
 \section{Large Language Models}
@@ -547,7 +546,9 @@ LLMs are trained in the following way:
 
 LLMs typically downsample user queries into a densely represented embedding vector. This embedding vector can then be compared to saved embeddings in a vector database, and can further
 \begin{itemize}
-    \item \textbf{Encoder/Autoencoder} - reduce $X_1 \ldots X_n$ to dense representation, then upsample the response.
+    \item \textbf{Encoder/Autoencoder} - reduce $X_1 \ldots X_n$ to dense representation (embedding vector), then upsample the response.
+    \item Embeddings can be stored in vector database. Pre-computed embeddings by a well-trained model can enhance the response of other LLMs that query the vector database. The vector
+    database can also serve as an embedding cache.
 \end{itemize}
 
 \end{document}
