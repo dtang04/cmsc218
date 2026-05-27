@@ -72,7 +72,7 @@ id & dept & hrs \\
     \item \textbf{Stratified samples} - point estimate is a weighted average of sub populations
         \begin{itemize}
             \item $\bar{X} = w_1\bar{X}_1 + \ldots + w_n\bar{X}_n$
-            \item $\text{Var}(\bar{X}) = \text{Var}(w_1X_1) + \ldots + \text{Var}(w_nX_n) = w_1^2\text{Var}(\bar{X}_1) + \ldots + w_n^2\text{Var}(\bar{X}_n)$
+            \item $\text{Var}(\bar{X}) = \text{Var}(w_1\bar{X}_1) + \ldots + \text{Var}(w_n\bar{X}_n) = w_1^2\text{Var}(\bar{X}_1) + \ldots + w_n^2\text{Var}(\bar{X}_n)$
         \end{itemize}
     \item Ensures representativeness of all populations according to preset weights
     \item \textbf{95\% CI for proportions}:
@@ -217,6 +217,63 @@ r2_score(y_test, y_pred)
     \item \textbf{Longitudinal model} - uses $y_{t-k}, \ldots, y_{t-1}$ to predict $y_t$
     \item \textbf{Cross-sectional model} - uses covariates $X$ to predict $y_t$
 \end{itemize}
+
+\noindent\textbf{Example (Sales)} \\
+\\
+A linear regression predictor has been fit on data that records sales in the given month and year. \\
+\\
+What are the potential issues in the model fitting pipeline below? \\
+\\
+\begin{verbatim}
+    X = df[["month", "year"]]
+    y = df[["sales"]]
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
+
+    # Train the model
+    linear_model = LinearRegression()
+    linear_model.fit(X_train, y_train)
+
+    # Evaluate the model
+    y_pred = linear_model.predict(X_test)
+    r2_score(y_test, y_pred)
+\end{verbatim}
+
+Issues:
+\begin{itemize}
+    \item Model does not account for autoregressive nature of data. Given that the predictors are w.r.t time,
+    the best predictor for this month's sales may actually be last month's sales.
+    \item The predictors are not standardized, meaning that we cannot compare the magnitude of coefficients directly. Thus,
+    we cannot isolate which predictor in the model is most significant.
+\end{itemize}
+
+A revised implementation would be:
+
+\begin{verbatim}
+    # Create the AR(1) column
+    df["prev_month_sales"] = df["sales"].shift(1)
+    df.dropna(inplace=True)
+
+    X = df[["month", "year", "prev_month_sales]]
+    y = df[["sales"]]
+
+    # Standardize X, y
+    X = StandardScalar().fit_transform(X)
+    y = StandardScalar().fit_transform(y)
+
+    # Use tscv.split since one of our predictors are time-dependent
+    tscv = TimeSeriesSplit()
+    for train_idx, test_idx in tscv.split(X):
+        X_train, X_test = X[train_idx], X[test_idx]
+        y_train, y_test = y[train_idx], y[test_idx]
+    
+    # Train the model
+    linear_model = LinearRegression()
+    linear_model.fit(X_train, y_train)
+
+    # Evaluate the model
+    y_pred = linear_model.predict(X_test)
+    r2_score(y_test, y_pred)
+\end{verbatim}
 
 \section{Logistic Regression}
 Given $(X_i, y_i)$, define the probability $y_i$ belongs to class 1 as
