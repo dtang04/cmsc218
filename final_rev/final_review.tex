@@ -110,7 +110,7 @@ id & dept & hrs \\
             \hat{b} = \mathbb{E}[Y] - \hat{m}\mathbb{E}[X]
         \]
         \[
-            \rho = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X)\text{Var}(Y)}} = \text{Cov}(X, Y)
+            \rho = \frac{\text{Cov}(X, Y)}{\sqrt{\text{Var}(X)\text{Var}(Y)}} = \text{Cov}(X, Y) \quad X, Y \text{ standardized}
         \]
         \[
             \Rightarrow \hat{m} = \rho
@@ -253,7 +253,7 @@ A revised implementation would be:
     df["prev_month_sales"] = df["sales"].shift(1)
     df.dropna(inplace=True)
 
-    X = df[["month", "year", "prev_month_sales]]
+    X = df[["month", "year", "prev_month_sales"]]
     y = df[["sales"]]
 
     # Standardize X, y
