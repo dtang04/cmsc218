@@ -31,6 +31,26 @@ df.agg(col1_mean = ("col1", "mean"), col2_median = ("col2", "median"))
         \end{itemize}
     \item \texttt{outer}, \texttt{left}, \texttt{right} can produce NaN.
 \end{itemize}
+\noindent\textbf{Example (Pandas Merge with Duplicate Keys)}
+\begin{verbatim}
+    df1 = pd.DataFrame({"id": [1, 1, 2, 3], "dept": ["sales", "VP", "tech", "hr"]})
+    df2 = pd.DataFrame({"id": [1, 2, 2, 3], "hrs": [10, 20, 30, 15]})
+    df1.merge(df2)
+\end{verbatim}
+
+The above merged df has the following form: \\
+\\
+\begin{tabular}{lcc}
+\hline
+id & dept & hrs \\
+\hline
+1 & sales & 10 \\
+1 & VP & 10 \\
+2 & tech & 20 \\
+2 & tech & 30 \\
+3 & hr & 15 \\
+\hline
+\end{tabular}
 
 \section{Sampling}
 \begin{itemize}
