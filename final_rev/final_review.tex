@@ -135,7 +135,7 @@ id & dept & hrs \\
 \subsection{Ridge Regression}
 Smooth predictions by adding L2 regularizer:
 \[
-    \arg\min_\beta |Y - X\beta|^2 + \alpha|\beta|^2 \Rightarrow \hat{\beta} = (X^TX + \alpha I)^{-1}X^Ty \Rightarrow \hat{y} = (X^TX + \alpha I)^{-1}y
+    \arg\min_\beta |Y - X\beta|^2 + \alpha|\beta|^2 \Rightarrow \hat{\beta} = (X^TX + \alpha I)^{-1}X^Ty \Rightarrow \hat{y} = X(X^TX + \alpha I)^{-1}y
 \]
 
 \begin{itemize}
