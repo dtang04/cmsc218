@@ -31,6 +31,19 @@ df.agg(col1_mean = ("col1", "mean"), col2_median = ("col2", "median"))
         \end{itemize}
     \item \texttt{outer}, \texttt{left}, \texttt{right} can produce NaN.
 \end{itemize}
+\noindent\textbf{Example (Group by Departments)}
+
+\begin{verbatim}
+    df.groupby(["Department"])["Salary"].mean()
+\end{verbatim}
+\begin{itemize}
+    \item The above line can be read as: group by department, and take the mean of each department's salary.
+    \item More generally, groupby takes on the following form:
+\end{itemize}
+\begin{verbatim}
+    df.groupby([group_var])[value_var].agg_func()
+\end{verbatim}
+
 \noindent\textbf{Example (Pandas Merge with Duplicate Keys)}
 \begin{verbatim}
     df1 = pd.DataFrame({"id": [1, 1, 2, 3], "dept": ["sales", "VP", "tech", "hr"]})
