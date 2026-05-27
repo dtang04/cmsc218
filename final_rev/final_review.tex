@@ -310,6 +310,22 @@ Then, minimizes cross-entropy loss:
         \end{center}
 \end{itemize}
 
+\begin{verbatim}
+    X = df[[...]]
+    X = StandardScaler().fit_transform(X)
+
+    y = df[labels]
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    
+    log_model = LogisticRegression()
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+
+    precision_score(y_test, y_pred) # TP / (TP + FP)
+    recall_score(y_test, y_pred) # TP / (TP + FN)
+\end{verbatim}
+
 \subsection{Multiclass Classification}
 \begin{itemize}
     \item Instead of $y_i \in \{0, 1\}$, now $y_i \in \mathcal{L}$, where $\mathcal{L} = \{1, \ldots, k\}$.
